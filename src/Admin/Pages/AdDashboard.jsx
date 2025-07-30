@@ -1,45 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axiosInstance from "../../axiosInstance";
+import { UserContext } from "../../UserContext";
 import "../Css/admin.css";
 
 const AdDashboard = () => {
   const [stats, setStats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { accessToken } = useContext(UserContext);
 
   useEffect(() => {
     const fetchDashboardInfo = async () => {
+      if (!accessToken) {
+        setError("No access token found.");
+        setLoading(false);
+        return;
+      }
+
       try {
+        // No need to add headers here if axiosInstance interceptor is set properly
         const res = await axiosInstance.get("/admin/dashboardInfo");
+
+        if (res.data.status === "error") {
+          throw new Error(res.data.error || "Unknown error");
+        }
 
         const data = res.data.data;
 
         const formattedStats = [
-          {
-            title: "Нийт хэрэглэгч",
-            value: data.totalUsers,
-          },
-          {
-            title: "Идэвхтэй багш",
-            value: data.activeTeachers,
-          },
-          {
-            title: "Нийт хичээл",
-            value: data.totalCourses,
-          },
-          {
-            title: "Сарын орлого",
-            value: `${data.monthlyRevenue}₮`,
-          },
-          {
-            title: "Орлогын өсөлт",
-            value: data.monthlyGrowthRate,
-          },
+          { title: "Нийт хэрэглэгч", value: data.totalUsers },
+          { title: "Идэвхтэй багш", value: data.activeTeachers },
+          { title: "Нийт хичээл", value: data.totalCourses },
+          { title: "Сарын орлого", value: `${data.totalRevenue || 0}₮` },
+          { title: "Орлогын өсөлт", value: data.monthlyGrowthRate },
         ];
 
         setStats(formattedStats);
       } catch (err) {
-        setError("Хяналтын мэдээллийг авч чадсангүй.");
+        setError(err.message || "Хяналтын мэдээллийг авч чадсангүй.");
         console.error(err);
       } finally {
         setLoading(false);
@@ -47,7 +45,7 @@ const AdDashboard = () => {
     };
 
     fetchDashboardInfo();
-  }, []);
+  }, [accessToken]);
 
   if (loading) return <p>Уншиж байна...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;

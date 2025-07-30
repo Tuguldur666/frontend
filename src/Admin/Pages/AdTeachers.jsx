@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import "../Css/Admin.css";
+import React, { useEffect, useState, useContext } from "react";
 import Rating from "@mui/material/Rating";
 import axiosInstance from "../../axiosInstance";
+import { UserContext } from "../../UserContext";
+import "../Css/admin.css";
 
-function AdTeachers() {
+const AdTeachers = () => {
   const [teachers, setTeachers] = useState([]);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [panelVisible, setPanelVisible] = useState(false);
@@ -12,10 +13,22 @@ function AdTeachers() {
   const [contactPanelVisible, setContactPanelVisible] = useState(false);
   const [contactPanelMounted, setContactPanelMounted] = useState(false);
 
+  const { accessToken } = useContext(UserContext);
+
   useEffect(() => {
     const fetchTeachers = async () => {
+      if (!accessToken) {
+        console.error("No access token found.");
+        return;
+      }
       try {
+        // Authorization header auto-set in axiosInstance interceptor
         const response = await axiosInstance.get("/admin/getTeacherStat");
+
+        if (response.data.status === "error") {
+          throw new Error(response.data.error || "Failed to fetch teachers");
+        }
+
         setTeachers(response.data.data);
       } catch (error) {
         console.error("Error fetching teacher stats:", error);
@@ -23,7 +36,7 @@ function AdTeachers() {
     };
 
     fetchTeachers();
-  }, []);
+  }, [accessToken]);
 
   const openPanel = (teacher) => {
     setSelectedTeacher(teacher);
@@ -38,6 +51,7 @@ function AdTeachers() {
       setSelectedTeacher(null);
     }, 300);
   };
+
   const openContactPanel = (teacher) => {
     setContactTeacher(teacher);
     setContactPanelMounted(true);
@@ -79,26 +93,28 @@ function AdTeachers() {
                   </div>
                 </td>
                 <td>
-                  {teacher.courses} Сургалт
+                  {teacher.courseCount} Сургалт
                   <br />
-                  {teacher.students} Сурагч
+                  {teacher.totalStudents} Сурагч
                 </td>
                 <td className="paid">
-                  ₮{(teacher.revenue || 0).toLocaleString()}
+                  ₮{(teacher.totalRevenue || 0).toLocaleString()}
                 </td>
                 <td>
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <Rating
-                      name={`rating-${teacher.id}`}
-                      value={teacher.rating}
+                      name={`rating-${teacher.teacherId}`}
+                      value={parseFloat(teacher.avgRating) || 0}
                       precision={0.1}
                       readOnly
                       size="small"
                     />
-                    <span style={{ marginLeft: 6 }}>{teacher.rating}</span>
+                    <span style={{ marginLeft: 6 }}>
+                      {teacher.avgRating || "N/A"}
+                    </span>
                   </div>
                 </td>
-                <td>{teacher.joined}</td>
+                <td>{new Date(teacher.joinedAt).toLocaleDateString()}</td>
                 <td>
                   <button
                     className="btn-edit"
@@ -143,23 +159,24 @@ function AdTeachers() {
             </div>
 
             <div className="profile-detail">
-              <strong>Сургалт:</strong> {selectedTeacher?.courses}
+              <strong>Сургалт:</strong> {selectedTeacher?.courseCount}
             </div>
             <div className="profile-detail">
-              <strong>Сурагч:</strong> {selectedTeacher?.students}
+              <strong>Сурагч:</strong> {selectedTeacher?.totalStudents}
             </div>
             <div className="profile-detail">
               <strong>Цалин:</strong> ₮
-              {(selectedTeacher?.revenue || 0).toLocaleString()}
+              {(selectedTeacher?.totalRevenue || 0).toLocaleString()}
             </div>
             <div className="profile-detail">
-              <strong>Огноо:</strong> {selectedTeacher?.joined}
+              <strong>Огноо:</strong>{" "}
+              {new Date(selectedTeacher?.joinedAt).toLocaleDateString()}
             </div>
             <div className="profile-detail">
               <strong>Чансаа:</strong>
               <Rating
-                name={`rating-${selectedTeacher?.id}`}
-                value={selectedTeacher?.rating}
+                name={`rating-${selectedTeacher?.teacherId}`}
+                value={parseFloat(selectedTeacher?.avgRating) || 0}
                 precision={0.1}
                 readOnly
                 size="small"
@@ -173,6 +190,7 @@ function AdTeachers() {
           />
         </>
       )}
+
       {contactPanelMounted && (
         <>
           <div
@@ -196,8 +214,7 @@ function AdTeachers() {
               <strong>И-мэйл:</strong> {contactTeacher?.email}
             </p>
             <p>
-              <strong>Утас:</strong>{" "}
-              {contactTeacher?.phone || "Мэдээлэл байхгүй"}
+              <strong>Утас:</strong> {contactTeacher?.phoneNumber || "Мэдээлэл байхгүй"}
             </p>
             <form
               onSubmit={(e) => {
@@ -230,6 +247,6 @@ function AdTeachers() {
       )}
     </div>
   );
-}
+};
 
 export default AdTeachers;
