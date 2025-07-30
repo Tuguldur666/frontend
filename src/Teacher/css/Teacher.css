@@ -1,0 +1,128 @@
+.teach-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: #1f2937;
+  color: white;
+  padding-left: 20px;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.sidebar-header h2 {
+  font-size: 22px;
+  margin-bottom: 25px;
+  color: white;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-link {
+  display: block;
+  padding: 12px 15px;
+  color: #ccc;
+  text-decoration: none;
+  font-size: 16px;
+  border-radius: 6px;
+  transition: all 0.4s ease;
+}
+
+.sidebar-link:hover {
+  background-color: #272654;
+  color: white;
+}
+
+.active-link {
+  background-color: #272654;
+  color: white;
+  font-weight: 600;
+}
+
+.logout-link {
+  margin-top: 20px;
+  color: rgb(254, 116, 129);
+}
+.student-section {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.content-table {
+  flex: 2;
+}
+
+.appointment-box {
+  flex: 1;
+  padding: 16px;
+  background: #f4f4f4;
+  border-radius: 8px;
+  min-width: 250px;
+}
+.dashboard-activity {
+  border: 1px solid rgb(178, 178, 178);
+  border-radius: 10px;
+  padding: 20px;
+  font-size: 20px;
+}
+.dashboard-courses {
+  border: 1px solid rgb(184, 184, 184);
+  border-radius: 20px;
+  padding: 20px;
+}
+.settings-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 30px;
+  max-width: 60vw;
+  margin: 0 auto;
+}
+
+.settings-sidebar-custom {
+  width: 20vw;
+  background-color: #f3f4f6;
+  padding: 20px;
+  border-radius: 10px;
+  height: 100vh;
+}
+
+.sidebar-title {
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.custom-tabs .MuiTab-root {
+  align-items: flex-start;
+  text-align: left;
+  font-weight: 500;
+}
+
+.settings-content-card {
+  flex: 1;
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  min-width: 300px;
+}
+
+@media (max-width: 768px) {
+  .settings-wrapper {
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .settings-sidebar-custom {
+    width: 100%;
+  }
+}
