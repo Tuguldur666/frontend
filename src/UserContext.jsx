@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useRef } from "react";
 import axiosInstance from "./axiosInstance";
-
+import { setAuthToken } from "./axiosInstance";
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -22,7 +22,9 @@ export const UserProvider = ({ children }) => {
       setUser(JSON.parse(savedUser));
       setAccessToken(savedAccessToken);
       setRefreshToken(savedRefreshToken);
-      axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${savedAccessToken}`;
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${savedAccessToken}`;
       startLogoutTimer(); // ✅ Start countdown on reload
     }
 
@@ -65,7 +67,18 @@ export const UserProvider = ({ children }) => {
 
     clearTimeout(logoutTimerRef.current); // ✅ Clear timer on logout
   };
+  useEffect(() => {
+    const storedToken = localStorage.getItem("accessToken");
+    const storedUser = localStorage.getItem("user");
 
+    if (storedToken) {
+      setAccessToken(storedToken);
+      setAuthToken(storedToken); // ✅ Important!
+    }
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
   return (
     <UserContext.Provider
       value={{

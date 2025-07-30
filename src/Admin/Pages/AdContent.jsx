@@ -1,34 +1,30 @@
-import React from "react";
-import "../Css/Admin.css";
+import React, { useEffect, useState, useContext } from "react";
 import Rating from "@mui/material/Rating";
+import axiosInstance, { setAuthToken } from "../../axiosInstance";
+import { UserContext } from "../../UserContext";
+import "../Css/Admin.css";
 
-function AdContent() {
-  const contentList = [
-    {
-      course: "Бөмбөр",
-      teacher: "Жавзан",
-      performance: "Анхан шат",
-      revenue: "₮2,500,000",
-      rating: 4.0,
-      lastUpdated: "2025-07-25",
-    },
-    {
-      course: "Бөмбөр",
-      teacher: "Пэрэнлэй",
-      performance: "Дунд",
-      revenue: "₮1,700,000",
-      rating: 3.5,
-      lastUpdated: "2025-07-24",
-    },
-    {
-      course: "Бөмбөр",
-      teacher: "Ёндон",
-      performance: "Ахисан түвшин",
-      revenue: "₮3,200,000",
-      rating: 4.5,
-      lastUpdated: "2025-07-20",
-    },
-  ];
+const AdContent = () => {
+  const [contentList, setContentList] = useState([]);
+  const { accessToken } = useContext(UserContext);
+
+  useEffect(() => {
+    const fetchCourseStats = async () => {
+      if (!accessToken) return;
+
+      setAuthToken(accessToken);
+
+      try {
+        const response = await axiosInstance.get("/admin/getAllCourseStats");
+
+        setContentList(response.data.data);
+      } catch (error) {
+        console.error("Error fetching course stats:", error);
+      }
+    };
+
+    fetchCourseStats();
+  }, [accessToken]);
 
   return (
     <div className="content-page">
@@ -46,26 +42,30 @@ function AdContent() {
         </thead>
         <tbody>
           {contentList.map((item, index) => (
-            <tr key={index}>
-              <td>{item.course}</td>
+            <tr key={item.courseId || index}>
+              <td>{item.name}</td>
               <td>{item.teacher}</td>
-              <td>{item.performance}</td>
-              <td>{item.revenue}</td>
+              <td>{item.level || "Мэдээлэл байхгүй"}</td>
+              <td>₮{(item.totalRevenue || 0).toLocaleString()}</td>
               <td>
                 <Rating
                   name={`read-only-${index}`}
-                  value={item.rating}
+                  value={parseFloat(item.avgRating) || 0}
                   precision={0.1}
                   readOnly
                 />
               </td>
-              <td>{item.lastUpdated}</td>
+              <td>
+                {item.latestUpdate
+                  ? new Date(item.latestUpdate).toLocaleDateString()
+                  : "N/A"}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
   );
-}
+};
 
 export default AdContent;

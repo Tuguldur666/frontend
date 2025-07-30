@@ -18,7 +18,6 @@ const AdDashboard = () => {
       }
 
       try {
-        // No need to add headers here if axiosInstance interceptor is set properly
         const res = await axiosInstance.get("/admin/dashboardInfo");
 
         if (res.data.status === "error") {
