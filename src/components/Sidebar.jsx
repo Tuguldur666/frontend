@@ -24,7 +24,7 @@ const Sidebar = () => {
     {
       id: "assignments",
       icon: "📋",
-      text: "Даsгал",
+      text: "Дасгал",
       path: "/assignments",
     },
     {
@@ -38,12 +38,6 @@ const Sidebar = () => {
       icon: "📄",
       text: "Төлбөр",
       path: "/payment",
-    },
-    {
-      id: "home",
-      icon: "🏠",
-      text: "Гарах",
-      path: "/",
     },
   ];
 

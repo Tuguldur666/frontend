@@ -105,7 +105,7 @@ function Login() {
           onClick={handleLogin}
           disabled={isLoading || !phoneNumber.trim() || !password.trim()}
         >
-          {isLoading ? 'Нэвтрэж байна...' : 'Нэвтрэх'}
+          {isLoading ? 'Нэвтэрж байна...' : 'Нэвтрэх'}
         </button>
 
         <p className="register-text">
