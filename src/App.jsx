@@ -29,7 +29,10 @@ import TeachDashboard from "./Teacher/pages/TeachDashboard";
 import TeachContent from "./Teacher/pages/TeachContent";
 import TeachStudent from "./Teacher/pages/TeachStudents";
 import TeachSettings from "./Teacher/pages/TeachSettings";
-
+import Beginner from "./Teacher/pages/Beginner";
+import Intermediate from "./Teacher/pages/Intermediate";
+import Pro from "./Teacher/pages/Professional";
+import Advanced from "./Teacher/pages/Advanced";
 import Sidebar from "./components/Sidebar";
 
 import RequireAuth from "./RequireAuth";
@@ -107,6 +110,11 @@ function App() {
         <Route path="content" element={<TeachContent />} />
         <Route path="student" element={<TeachStudent />} />
         <Route path="settings" element={<TeachSettings />} />
+        <Route path="/teacher/course/beginner" element={<Beginner />} />
+<Route path="/teacher/course/intermediate" element={<Intermediate />} />
+<Route path="/teacher/course/advanced" element={<Advanced />} />
+<Route path="/teacher/course/professional" element={<Pro />} />
+
       </Route>
       {/* Protected routes with sidebar */}
       <Route

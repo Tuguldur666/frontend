@@ -22,8 +22,7 @@ const AdTeachers = () => {
         return;
       }
       try {
-        // Authorization header auto-set in axiosInstance interceptor
-        const response = await axiosInstance.get("/admin/getTeacherStat");
+        const response = await axiosInstance.post("/admin/getTeacherStat");
 
         if (response.data.status === "error") {
           throw new Error(response.data.error || "Failed to fetch teachers");

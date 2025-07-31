@@ -5,17 +5,21 @@
   width: 250px;
   height: 100vh;
   overflow-y: auto;
-  background-color: #1f2937;
+  background-color: #1f2937; /* dark slate */
   color: white;
   padding-left: 20px;
   z-index: 1000;
   box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  transition: all 0.3s ease;
 }
 
 .sidebar-header h2 {
   font-size: 22px;
   margin-bottom: 25px;
-  color: white;
+  color: #ffffff;
+  font-weight: 600;
+  text-align: center;
 }
 
 .sidebar-nav ul {
@@ -31,16 +35,16 @@
   text-decoration: none;
   font-size: 16px;
   border-radius: 6px;
-  transition: all 0.4s ease;
+  transition: all 0.3s ease;
 }
 
 .sidebar-link:hover {
-  background-color: #272654;
-  color: white;
+  background-color: #374151;
+  color: #ffffff;
 }
 
 .active-link {
-  background-color: #272654;
+  background-color: #4f46e5; /* indigo highlight */
   color: white;
   font-weight: 600;
 }
@@ -48,7 +52,56 @@
 .logout-link {
   margin-top: 20px;
   color: rgb(254, 116, 129);
+  transition: all 0.3s ease;
 }
+
+.logout-link:hover {
+  background-color: #7f1d1d;
+  color: #fff;
+  padding-left: 15px;
+  border-radius: 6px;
+}
+
+.submenu {
+  padding-left: 20px;
+  margin-top: 5px;
+  animation: slideDown 0.2s ease;
+}
+
+.sidebar-sublink {
+  display: block;
+  padding: 8px 15px;
+  color: #a3a3a3;
+  font-size: 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar-sublink:hover {
+  background-color: #374151;
+  color: #fff;
+}
+
+.sidebar-sublink.active-link {
+  background-color: #4f46e5;
+  color: #fff;
+  font-weight: 500;
+}
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Layout areas */
 .student-section {
   display: flex;
   gap: 24px;
@@ -67,17 +120,20 @@
   border-radius: 8px;
   min-width: 250px;
 }
+
 .dashboard-activity {
   border: 1px solid rgb(178, 178, 178);
   border-radius: 10px;
   padding: 20px;
   font-size: 20px;
 }
+
 .dashboard-courses {
   border: 1px solid rgb(184, 184, 184);
   border-radius: 20px;
   padding: 20px;
 }
+
 .settings-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -124,5 +180,130 @@
 
   .settings-sidebar-custom {
     width: 100%;
+    height: auto;
   }
+
+  .teach-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 10px;
+  }
+}
+.course-control {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.course-input,
+.course-select {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.course-input:focus,
+.course-select:focus {
+  border-color: #5dd195;
+}
+.course-button {
+  background-color: #41ca83;
+  color: white;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.course-button:hover {
+  background-color: #2cd37d;
+}
+.course-button:focus {
+  background-color: rgb(17, 182, 77);
+}
+.courses-card-section {
+  margin-top: 40px;
+}
+
+.courses-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.course-card {
+  background-color: #e0e7ff;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  width: 220px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card:hover {
+  background-color: #c7d2fe;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.selected-course {
+  background-color: #41ca83;
+  color: white;
+  box-shadow: 0 6px 14px rgba(49, 225, 1, 0.6);
+}
+
+.selected-course:hover {
+  background-color: #2cd37d;
+}
+
+.upload-label {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 16px;
+  background-color: #41ca83;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+
+.upload-label:hover {
+  background-color: #28d87d;
+}
+
+.video-preview-section {
+  margin-top: 30px;
+}
+
+.video-card {
+  margin-bottom: 20px;
+}
+
+.video-card {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 350px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.video-card p {
+  margin-bottom: 10px;
+  font-weight: 500;
+  font-size: 15px;
+  color: #1f2937;
 }

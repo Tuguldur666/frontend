@@ -7,7 +7,6 @@ const AdminSidebar = () => {
   const { user, logout } = useContext(UserContext);
   const navigate = useNavigate();
 
-  // Logout handler - clears user context and navigates to admin login
   const handleLogout = () => {
     logout();
     navigate("/admin/login");

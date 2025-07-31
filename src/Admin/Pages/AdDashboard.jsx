@@ -19,8 +19,8 @@ const AdDashboard = () => {
 
       try {
         const [dashboardRes, teachersRes] = await Promise.all([
-          axiosInstance.get("/admin/dashboardInfo"),
-          axiosInstance.get("/admin/getTeacherStat"),
+          axiosInstance.post("/admin/dashboardInfo"),
+          axiosInstance.post("/admin/getTeacherStat"),
         ]);
 
         if (dashboardRes.data.status === "error") {
@@ -41,7 +41,6 @@ const AdDashboard = () => {
           { title: "Нийт хичээл", value: data.totalCourses },
           { title: "Сарын орлого", value: `${data.totalRevenue || 0}₮` },
           { title: "Орлогын өсөлт", value: data.monthlyGrowthRate },
-          { title: "Багш нарын тоо", value: teachers.length },
         ];
 
         setStats(formattedStats);

@@ -15,7 +15,7 @@ const AdContent = () => {
       setAuthToken(accessToken);
 
       try {
-        const response = await axiosInstance.get("/admin/getAllCourseStats");
+        const response = await axiosInstance.post("/admin/getAllCourseStats");
 
         setContentList(response.data.data);
       } catch (error) {

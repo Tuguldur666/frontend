@@ -1,5 +1,4 @@
-// src/Teacher/Components/TeachSidebar.jsx
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../css/Teacher.css";
 import { UserContext } from "../../UserContext";
@@ -7,12 +6,17 @@ import { UserContext } from "../../UserContext";
 const TeachSidebar = () => {
   const { user, logout } = useContext(UserContext);
   const navigate = useNavigate();
+  const [isTrainingOpen, setIsTrainingOpen] = useState(false);
 
   const teacherName = user ? `${user.firstName}` : "Teacher Panel";
 
   const handleLogout = () => {
     logout();
     navigate("/teacher/login");
+  };
+
+  const toggleTrainingMenu = () => {
+    setIsTrainingOpen(!isTrainingOpen);
   };
 
   return (
@@ -53,6 +57,63 @@ const TeachSidebar = () => {
               👩‍🎓 Сурагчид
             </NavLink>
           </li>
+
+          {/* Сургалт with submenu */}
+          <li>
+            <div
+              className="sidebar-link"
+              onClick={toggleTrainingMenu}
+              style={{ cursor: "pointer" }}
+            >
+              👨‍🏫 Сургалт ▾
+            </div>
+            {isTrainingOpen && (
+              <ul className="submenu">
+                <li>
+                  <NavLink
+                    to="/teacher/course/beginner"
+                    className={({ isActive }) =>
+                      `sidebar-sublink ${isActive ? "active-link" : ""}`
+                    }
+                  >
+                    Анхан шат
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/teacher/course/intermediate"
+                    className={({ isActive }) =>
+                      `sidebar-sublink ${isActive ? "active-link" : ""}`
+                    }
+                  >
+                    Дунд шат
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to="/teacher/course/advanced"
+                    className={({ isActive }) =>
+                      `sidebar-sublink ${isActive ? "active-link" : ""}`
+                    }
+                  >
+                    Ахисан шат
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/teacher/course/professional"
+                    className={({ isActive }) =>
+                      `sidebar-sublink ${isActive ? "active-link" : ""}`
+                    }
+                  >
+                    Гүнзгий шат
+                  </NavLink>
+                </li>
+              </ul>
+            )}
+          </li>
+
           <li>
             <NavLink
               to="/teacher/settings"
@@ -72,9 +133,10 @@ const TeachSidebar = () => {
                 background: "none",
                 border: "none",
                 padding: 0,
+                marginLeft: "25px",
               }}
             >
-              🚪 Гарах
+              Гарах
             </button>
           </li>
         </ul>
