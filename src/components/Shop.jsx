@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, Home } from 'lucide-react';
 import '../css/Shop.css';
+import drumImage from '../assets/drum.jpg'
 
 const Shop = () => {
-  const [selectedKit, setSelectedKit] = useState(6); // Kit 6 selected by default
+  const [selectedKit, setSelectedKit] = useState(1); // Kit 6 selected by default
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Бөмбөр');
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -24,7 +25,7 @@ const Shop = () => {
     { id: 10, name: 'Gear4Music Drum Kit', price: '1 000 000' }
   ];
 
-  const categories = ['Бөмбөр', 'Гитар', 'Пиано'];
+  const categories = ['Бөмбөр', 'Гитар', 'Пиано', 'Ukulele', 'Speaker'];
 
   const handleKitSelect = (kitId) => {
     setSelectedKit(kitId);
