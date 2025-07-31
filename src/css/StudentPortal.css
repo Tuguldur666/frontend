@@ -12,7 +12,26 @@
   flex: 1;
   background-color: #f8fafc;
   color: #1f2937;
-  margin-left: 250px; /* Account for fixed sidebar */
+  margin-left: 250px; /* Match default sidebar width */
+}
+
+/* Sync margin-left with sidebar widths */
+@media (max-width: 1024px) {
+  .main-content {
+    margin-left: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 200px;
+  }
+}
+
+@media (max-width: 640px) {
+  .main-content {
+    margin-left: 60px;
+  }
 }
 
 .header {
@@ -176,13 +195,9 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .main-content {
-    margin-left: 200px;
-  }
+  /* margin-left updated above */
 }
 
 @media (max-width: 640px) {
-  .main-content {
-    margin-left: 60px;
-  }
+  /* margin-left updated above */
 }
