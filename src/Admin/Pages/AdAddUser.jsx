@@ -51,7 +51,7 @@ function AdAddUser() {
         }
       );
 
-      setSuccess("Хэрэглэгч амжилттай нэмэгдsen2!");
+      setSuccess("Хэрэглэгч амжилттай нэмэгдseen!");
       setFirstName("");
       setLastName("");
       setEmail("");
