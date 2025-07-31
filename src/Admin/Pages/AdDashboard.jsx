@@ -8,7 +8,7 @@ const AdDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { accessToken } = useContext(UserContext);
-
+  const [teacherCount, setTeacherCount] = useState(null);
   useEffect(() => {
     const fetchDashboardInfo = async () => {
       if (!accessToken) {
@@ -18,20 +18,30 @@ const AdDashboard = () => {
       }
 
       try {
-        const res = await axiosInstance.get("/admin/dashboardInfo");
+        const [dashboardRes, teachersRes] = await Promise.all([
+          axiosInstance.get("/admin/dashboardInfo"),
+          axiosInstance.get("/admin/getTeacherStat"),
+        ]);
 
-        if (res.data.status === "error") {
-          throw new Error(res.data.error || "Unknown error");
+        if (dashboardRes.data.status === "error") {
+          throw new Error(dashboardRes.data.error || "Unknown error");
+        }
+        if (teachersRes.data.status === "error") {
+          throw new Error(teachersRes.data.error || "Failed to fetch teachers");
         }
 
-        const data = res.data.data;
+        const data = dashboardRes.data.data;
+        const teachers = teachersRes.data.data;
+
+        setTeacherCount(teachers.length);
 
         const formattedStats = [
           { title: "Нийт хэрэглэгч", value: data.totalUsers },
-          { title: "Идэвхтэй багш", value: data.activeTeachers },
+          { title: "Багш нарын тоо", value: teachers.length },
           { title: "Нийт хичээл", value: data.totalCourses },
           { title: "Сарын орлого", value: `${data.totalRevenue || 0}₮` },
           { title: "Орлогын өсөлт", value: data.monthlyGrowthRate },
+          { title: "Багш нарын тоо", value: teachers.length },
         ];
 
         setStats(formattedStats);
