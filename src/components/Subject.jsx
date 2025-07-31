@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import "../css/Subject.css";
-
 import Header from "./Header";
+
 function Subject() {
+  const videoRefs = useRef([]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handlePlayAndFullscreen = (index) => {
+    const video = videoRefs.current[index];
+    if (video) {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+      } else if (video.msRequestFullscreen) {
+        video.msRequestFullscreen();
+      }
+    }
+  };
+
   return (
     <div className="subject-container">
       <Header />
@@ -30,9 +48,20 @@ function Subject() {
                 <span className="badge left">Анхан шат</span>
                 <span className="badge right">Үнэгүй</span>
               </div>
-              <div className="card-image-placeholder">
-                <img src="/images/youtube-icon.png" alt="video" />
+              <div className="card-video-player">
+                <video
+                  ref={(el) => (videoRefs.current[index] = el)}
+                  src="/videos/homeVideo.mp4"
+                  width="100%"
+                  height="200"
+                  controls
+                  muted
+                  preload="metadata"
+                >
+                  Таны браузер видео дэмжигдэхгүй байх шиг байна.
+                </video>
               </div>
+
               <h3 className="card-title">Бөмбөрийн үндэс</h3>
               <p className="card-desc">
                 Анхан шатны сурагчдад зориулсан бөмбөрийн үндсэн техник, суурь,
@@ -44,7 +73,12 @@ function Subject() {
                 <span>👥 248</span>
                 <span>⭐ 4.8</span>
               </div>
-              <button className="view-button">Хичээл үзэх</button>
+              <button
+                className="view-button"
+                onClick={() => handlePlayAndFullscreen(index)}
+              >
+                Хичээл үзэх
+              </button>
             </div>
           ))}
         </div>

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import "../css/Home.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 import Header from "./Header";
 function Home() {
   const location = useLocation();
-  
+  const navigate = useNavigate();
   useEffect(() => {
     if (location.state?.scrollToFooter) {
       const footer = document.querySelector(".footer");
@@ -28,7 +28,15 @@ function Home() {
               мэргэжлийн багш нараас суралцаарай
             </p>
             <div className="hero-buttons">
-              <button className="hero-btn">Үнэгүй эхлэх</button>
+              <button
+                className="hero-btn"
+                onClick={() => {
+                  navigate("/subject");
+                  window.scrollTo(0, 0);
+                }}
+              >
+                Үнэгүй эхлэх
+              </button>
               <button className="hero-btn">Хичээлүүд үзэх</button>
             </div>
           </div>
@@ -149,6 +157,10 @@ function Home() {
               <p>Хөгжмийн зэмсэгтэй танилцах</p>
               <p>Анхан шатны техник</p>
               <button
+                onClick={() => {
+                  navigate("/subject");
+                  window.scrollTo(0, 0);
+                }}
                 style={{
                   backgroundColor: "#1a202c",
                   color: "white",
@@ -196,7 +208,14 @@ function Home() {
           <div className="second-hero-header">
             <h2>Хөгжмийн аялалаа өнөөдөр эхлүүлээрэй</h2>
             <h3>Эхний 3 хичээл үнэгүй. Бүртгүүлж, хөгжмийн ертөнцөд орцгооё</h3>
-            <button>Үнэгүй эхлэх</button>
+            <button
+              onClick={() => {
+                navigate("/subject");
+                window.scrollTo(0, 0);
+              }}
+            >
+              Үнэгүй эхлэх
+            </button>
           </div>
         </div>
 

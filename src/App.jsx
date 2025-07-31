@@ -80,13 +80,13 @@ function App() {
       {/* Admin routes */}
       {/* Admin routes - protected */}
       <Route
-  path="/admin"
-  element={
-    <RequireAuth allowedRoles={["admin"]}>
-      <AdminLayout />
-    </RequireAuth>
-  }
->
+        path="/admin"
+        element={
+          <RequireAuth allowedRoles={["admin"]}>
+            <AdminLayout />
+          </RequireAuth>
+        }
+      >
         <Route path="panel" element={<AdDashboard />} />
         <Route path="settings" element={<AdSettings />} />
         <Route path="addUser" element={<AdAddUser />} />
@@ -110,11 +110,10 @@ function App() {
         <Route path="content" element={<TeachContent />} />
         <Route path="student" element={<TeachStudent />} />
         <Route path="settings" element={<TeachSettings />} />
-        <Route path="/teacher/course/beginner" element={<Beginner />} />
-<Route path="/teacher/course/intermediate" element={<Intermediate />} />
-<Route path="/teacher/course/advanced" element={<Advanced />} />
-<Route path="/teacher/course/professional" element={<Pro />} />
-
+        <Route path="course/beginner" element={<Beginner />} />
+        <Route path="course/intermediate" element={<Intermediate />} />
+        <Route path="course/advanced" element={<Advanced />} />
+        <Route path="course/professional" element={<Pro />} />
       </Route>
       {/* Protected routes with sidebar */}
       <Route

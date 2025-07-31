@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FiMenu, FiX } from "react-icons/fi"; // react-icons package for icons
+import { FiMenu, FiX } from "react-icons/fi"; 
 
 function Header() {
   const navigate = useNavigate();

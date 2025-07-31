@@ -1,64 +1,125 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import axiosInstance from "../../axiosInstance"; // your axiosInstance
+import { UserContext } from "../../UserContext";
 import "../css/Teacher.css";
 
 const Beginner = () => {
+  const { accessToken } = useContext(UserContext);
+
   const [courses, setCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState("");
-  const [videos, setVideos] = useState({});
+  const [selectedCourse, setSelectedCourse] = useState(null);
   const [courseInput, setCourseInput] = useState("");
+  const [videos, setVideos] = useState({}); // { courseTitle: [lessons] }
   const videoSectionRef = useRef(null);
 
-  // Load from localStorage on initial load
+  // Load courses and videos from backend on mount
   useEffect(() => {
-    const savedCourses = JSON.parse(localStorage.getItem("beginnerCourses")) || [];
-    const savedVideos = JSON.parse(localStorage.getItem("beginnerVideos")) || {};
-    setCourses(savedCourses);
-    setVideos(savedVideos);
-  }, []);
+    if (!accessToken) return;
 
-  // Save to localStorage when courses or videos change
-  useEffect(() => {
-    localStorage.setItem("beginnerCourses", JSON.stringify(courses));
-    localStorage.setItem("beginnerVideos", JSON.stringify(videos));
-  }, [courses, videos]);
+    axiosInstance
+      .post(
+        "/teacher/getOwnCourses",
+        {}, // no body needed here
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      )
+      .then((res) => {
+        if (res.data?.courses) {
+          setCourses(res.data.courses);
+          const videosMap = {};
+          res.data.courses.forEach((course) => {
+            videosMap[course.title] = course.lessons || [];
+          });
+          setVideos(videosMap);
+          if (res.data.courses.length > 0) setSelectedCourse(res.data.courses[0].title);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch courses", err);
+      });
+  }, [accessToken]);
 
+  // Add a new course via backend
   const handleAddCourse = () => {
-    const newCourse = courseInput.trim();
-    if (newCourse && !courses.includes(newCourse)) {
-      setCourses([...courses, newCourse]);
-      setSelectedCourse(newCourse);
-      setCourseInput("");
-    }
+    const newCourseTitle = courseInput.trim();
+    if (!newCourseTitle) return alert("Курсын нэр оруулна уу.");
+    if (!accessToken) return alert("Нэвтрэх шаардлагатай.");
+
+    axiosInstance
+      .post(
+        "/teacher/createCourse",
+        {
+          title: newCourseTitle,
+          description: "Тайлбар оруулна уу",
+          level: "beginner",
+          category: "music",
+          price: 0,
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      )
+      .then((res) => {
+        if (res.data.course) {
+          setCourses((prev) => [res.data.course, ...prev]);
+          setVideos((prev) => ({ ...prev, [res.data.course.title]: [] }));
+          setSelectedCourse(res.data.course.title);
+          setCourseInput("");
+        }
+      })
+      .catch((err) => {
+        console.error("Create course failed", err);
+        alert("Курс үүсгэхэд алдаа гарлаа.");
+      });
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      handleAddCourse();
-    }
-  };
-
+  // Upload video to backend
   const handleVideoUpload = (e) => {
     const file = e.target.files[0];
+    if (!file) return;
     if (!selectedCourse) return alert("Курс сонгоно уу.");
-    if (file && file.type.startsWith("video/")) {
-      const videoURL = URL.createObjectURL(file);
 
-      setVideos((prev) => {
-        const updated = { ...prev };
-        if (!updated[selectedCourse]) updated[selectedCourse] = [];
-
-        const exists = updated[selectedCourse].some((v) => v.name === file.name);
-        if (!exists) {
-          updated[selectedCourse].push({ name: file.name, url: videoURL });
-        }
-
-        return updated;
-      });
-
-      setTimeout(() => {
-        videoSectionRef.current?.scrollIntoView({ behavior: "smooth" });
-      }, 100);
+    const maxSizeMB = 50;
+    if (file.size > maxSizeMB * 1024 * 1024) {
+      alert(`Видео файлын хэмжээ ${maxSizeMB}MB-с их байж болохгүй.`);
+      return;
     }
+    if (!file.type.startsWith("video/")) {
+      alert("Зөвхөн видео файлыг оруулна уу.");
+      return;
+    }
+
+    // Find course object to get courseId
+    const courseObj = courses.find((c) => c.title === selectedCourse);
+    if (!courseObj) return alert("Сонгогдсон курс олдсонгүй.");
+
+    const formData = new FormData();
+    formData.append("video", file);
+    formData.append("courseId", courseObj._id);
+    formData.append("duration", 0); // optionally calculate video duration
+
+    axiosInstance
+      .post("/teacher/uploadLesson", formData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        if (res.data.lesson) {
+          setVideos((prev) => {
+            const updated = { ...prev };
+            if (!updated[selectedCourse]) updated[selectedCourse] = [];
+            updated[selectedCourse].push(res.data.lesson);
+            return updated;
+          });
+
+          setTimeout(() => {
+            videoSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+          }, 100);
+        }
+      })
+      .catch((err) => {
+        console.error("Видео оруулахад алдаа гарлаа", err);
+        alert("Видео оруулахад алдаа гарлаа.");
+      });
   };
 
   return (
@@ -71,21 +132,22 @@ const Beginner = () => {
           placeholder="Шинэ курс нэр..."
           value={courseInput}
           onChange={(e) => setCourseInput(e.target.value)}
-          onKeyDown={handleKeyDown}
+          onKeyDown={(e) => e.key === "Enter" && handleAddCourse()}
           className="course-input"
         />
         <button className="course-button" onClick={handleAddCourse}>
           ➕ Курс нэмэх
         </button>
+
         <select
-          value={selectedCourse}
+          value={selectedCourse || ""}
           onChange={(e) => setSelectedCourse(e.target.value)}
           className="course-select"
         >
           <option value="">-- Курс сонгох --</option>
-          {courses.map((course, idx) => (
-            <option key={idx} value={course}>
-              {course}
+          {courses.map((course) => (
+            <option key={course._id} value={course.title}>
+              {course.title}
             </option>
           ))}
         </select>
@@ -103,39 +165,37 @@ const Beginner = () => {
         </label>
       )}
 
+      <div className="courses-card-section">
+        <h3>Үүсгэсэн курсүүд</h3>
+        <div className="courses-cards-container">
+          {courses.map((course) => (
+            <div
+              key={course._id}
+              className={`course-card ${
+                course.title === selectedCourse ? "selected-course" : ""
+              }`}
+              onClick={() => setSelectedCourse(course.title)}
+              style={{ cursor: "pointer" }}
+            >
+              <h4>{course.title}</h4>
+              <p>Видео: {videos[course.title]?.length || 0}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {selectedCourse && videos[selectedCourse]?.length > 0 && (
         <div className="video-preview-section" ref={videoSectionRef}>
           <h3>{selectedCourse} курсийн бичлэгүүд</h3>
           {videos[selectedCourse].map((vid, index) => (
             <div key={index} className="video-card">
-              <p>{vid.name}</p>
+              <p>{vid.name || vid.filename}</p>
               <video width="320" controls>
-                <source src={vid.url} type="video/mp4" />
+                <source src={vid.url || vid.filePath} type="video/mp4" />
                 Видео дэмжихгүй байна.
               </video>
             </div>
           ))}
-        </div>
-      )}
-
-      {courses.length > 0 && (
-        <div className="courses-card-section">
-          <h3>Үүсгэсэн курсүүд</h3>
-          <div className="courses-cards-container">
-            {courses.map((course, idx) => (
-              <div
-                key={idx}
-                className={`course-card ${
-                  course === selectedCourse ? "selected-course" : ""
-                }`}
-                onClick={() => setSelectedCourse(course)}
-                style={{ cursor: "pointer" }}
-              >
-                <h4>{course}</h4>
-                <p>Видео: {videos[course]?.length || 0}</p>
-              </div>
-            ))}
-          </div>
         </div>
       )}
     </div>
