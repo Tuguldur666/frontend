@@ -24,9 +24,8 @@
   display: flex;
   align-items: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    /* width: 200px; */
-    /* margin-left: 70px; */
-
+  /* width: 200px; */
+  /* margin-left: 70px; */
 }
 .logo-img {
   width: 100px;
@@ -44,8 +43,7 @@
   /* margin: 30px; */
 }
 .nav-buttons {
-  margin-right: -130px;
-  
+  margin-right: -100px;
 }
 .nav-btn:hover {
   color: #000000;
@@ -91,7 +89,6 @@
   font-weight: bold;
   cursor: pointer;
 }
-
 
 .hero {
   display: flex;
@@ -282,7 +279,6 @@
   background-color: #ddd;
 }
 
-
 .footer {
   background-color: #f9f9f9;
   padding: 60px 150px 30px 150px;
@@ -375,3 +371,86 @@
   margin: 10px 0;
 }
 
+.hamburger-icon {
+  display: none;
+  cursor: pointer;
+  color: #333;
+  padding: 8px;
+}
+
+.nav-buttons,
+.auth-buttons {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 1024px) {
+  .navbar {
+    flex-wrap: nowrap;
+    height: 80px;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+
+  .hamburger-icon {
+    display: block;
+    margin-left: auto;
+    cursor: pointer;
+    color: #333;
+    padding: 8px;
+    z-index: 1100;
+  }
+
+  .nav-buttons {
+    margin-right: 0;
+  }
+
+  .nav-buttons,
+  .auth-buttons {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    background: white;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-200%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 9999;
+  }
+
+  .nav-buttons.nav-open,
+  .auth-buttons.nav-open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-buttons .nav-btn,
+  .auth-buttons button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 20px;
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .home-container {
+    padding: 80px 150px 0 150px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .home-container {
+    padding: 80px 20px 0 20px;
+  }
+}
