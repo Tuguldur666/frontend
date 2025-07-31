@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import Logo from "./Logo";
-
-// import "../css/Header.css";
-function Header(onScrollToFooter) {
+import { useLocation, useNavigate, Link } from "react-router-dom";
+function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+
+  
 
   const scrollToFooter = () => {
     const footer = document.querySelector(".footer-main");
@@ -15,7 +14,9 @@ function Header(onScrollToFooter) {
       footer.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
+
   const handleContactClick = () => {
+    setMenuOpen(false);
     if (location.pathname === "/") {
       scrollToFooter();
     } else {
@@ -61,11 +62,22 @@ function Header(onScrollToFooter) {
         }`}
       >
         <div className="logoo">
-           <img src="/images/llogo.png" alt="logo test"  style={{height:"50px"}}/>
+          <Link
+          to="/"
+          onClick={(e) => {
+            if (location.pathname === "/") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+            setMenuOpen(false);
+          }}
+        >
+          <img src="/images/llogo.png" alt="logo" style={{ height: "50px" }} />
+        </Link>
         </div>
         <nav className="nav-buttons">
           <button className="nav-btn" onClick={() => navigate("/subject")}>
-            Хичээлүүд 
+            Хичээлүүд
           </button>
           <button className="nav-btn" onClick={() => navigate("/shop")}>
             Дэлгүүр
