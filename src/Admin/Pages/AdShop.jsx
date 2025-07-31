@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../Css/Admin.css";
 const AdShop = () => {
   const [activeTab, setActiveTab] = useState("Захиалга");
-
+const navigate = useNavigate();
   const orders = Array(15).fill({
     
     name: "Yamaha E-5510",
@@ -57,7 +58,7 @@ const AdShop = () => {
       </div>
 
       <div className="tabs">
-        {["Захиалга", "Хүргэгдсэн", "Хүргэгдээгүй"].map((tab) => (
+        {/* {["Захиалга", "Хүргэгдсэн", "Хүргэгдээгүй"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -65,7 +66,8 @@ const AdShop = () => {
           >
             {tab}
           </button>
-        ))}
+        ))} */}
+        <button className="tab-button" onClick={() => navigate("/admin/add-product")}>Бараа нэмэх</button>
       </div>
 
       <div className="orders-section">

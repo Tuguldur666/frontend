@@ -34,6 +34,7 @@ import Intermediate from "./Teacher/pages/Intermediate";
 import Pro from "./Teacher/pages/Professional";
 import Advanced from "./Teacher/pages/Advanced";
 import Sidebar from "./components/Sidebar";
+import AddProduct from "./Admin/Pages/AddProduct";
 
 import RequireAuth from "./RequireAuth";
 import { useAxiosInterceptor } from "./axiosInterceptor";
@@ -94,6 +95,7 @@ function App() {
         <Route path="teacher" element={<AdTeachers />} />
         <Route path="content" element={<AdContent />} />
         <Route path="financial" element={<AdFinancial />} />
+        <Route path="add-product" element={<AddProduct />} />
       </Route>
       {/* Admin login remains public */}
       <Route path="/admin/login" element={<AdLogin />} />
