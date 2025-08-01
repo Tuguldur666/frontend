@@ -50,7 +50,7 @@ function AdAddUser() {
         }
       );
 
-      setSuccess("Хэрэглэгч амжилттай нэмэгдlee!");
+      setSuccess("Хэрэглэгч амжилттай нэмэгдлээ!");
       setFirstName("");
       setLastName("");
       setEmail("");
