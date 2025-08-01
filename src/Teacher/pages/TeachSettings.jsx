@@ -191,18 +191,19 @@ const TeachSettings = () => {
             <Typography variant="h6" gutterBottom>
               Хувийн тохиргоо
             </Typography>
+
             <TextField
-              label="Нэр"
-              name="firstName"
-              value={formData.firstName}
+              label="Овог"
+              name="lastName"
+              value={formData.lastName}
               onChange={handleChange}
               fullWidth
               margin="normal"
             />
             <TextField
-              label="Овог"
-              name="lastName"
-              value={formData.lastName}
+              label="Нэр"
+              name="firstName"
+              value={formData.firstName}
               onChange={handleChange}
               fullWidth
               margin="normal"
