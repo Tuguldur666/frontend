@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../css/Teacher.css";
 import { UserContext } from "../../UserContext";
@@ -9,7 +9,9 @@ const TeachSidebar = () => {
   const [isTrainingOpen, setIsTrainingOpen] = useState(false);
 
   const teacherName = user ? `${user.firstName}` : "Teacher Panel";
-
+ useEffect(() => {
+    console.log("User Info:", user);
+  }, [user]);
   const handleLogout = () => {
     logout();
     navigate("/teacher/login");
