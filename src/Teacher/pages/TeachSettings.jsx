@@ -20,6 +20,7 @@ const TeachSettings = () => {
     lastName: "",
     bio: "",
     email: "",
+    phoneNumber: "",
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
@@ -30,26 +31,30 @@ const TeachSettings = () => {
   useEffect(() => {
     const fetchTeacherInfo = async () => {
       try {
-        
         const res = await axiosInstance.get("/user/getUser", {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
-        const { firstName, lastName, bio, email } = res.data;
-        console.log("Fetched teacher info:", res.data);
-        setFormData((prev) => ({
-  ...prev,
-  firstName: firstName || "",
-  lastName: lastName || "",
-  bio: bio || "",
-  email: email || "",
-}));
 
+        const {
+          firstName,
+          lastName,
+          email,
+          bio = "",
+          phoneNumber = "",
+        } = res.data.user;
+
+        setFormData((prev) => ({
+          ...prev,
+          firstName,
+          lastName,
+          email,
+          bio,
+          phoneNumber,
+        }));
       } catch (err) {
         console.error("Error fetching teacher info:", err);
       }
     };
-// console.log("accessToken in context:", accessToken);
-
 
     fetchTeacherInfo();
   }, [accessToken]);
@@ -61,11 +66,11 @@ const TeachSettings = () => {
 
   const handleTabChange = (_, newValue) => {
     setActiveTab(newValue);
-    setSuccessMsg(""); 
+    setSuccessMsg("");
   };
 
   const handleSave = async () => {
-    setSuccessMsg(""); 
+    setSuccessMsg("");
 
     if (activeTab === 0) {
       const { currentPassword, newPassword, confirmPassword } = formData;
@@ -99,10 +104,10 @@ const TeachSettings = () => {
       }
     } else {
       try {
-        const { firstName, lastName, bio } = formData;
+        const { firstName, lastName, bio, phoneNumber } = formData;
         const res = await axiosInstance.put(
           "/teacher/updateTeacherInfo",
-          { firstName, lastName, bio },
+          { firstName, lastName, bio, phoneNumber },
           { headers: { Authorization: `Bearer ${accessToken}` } }
         );
 
@@ -199,6 +204,15 @@ const TeachSettings = () => {
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Утасны дугаар"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              disabled
               fullWidth
               margin="normal"
             />
