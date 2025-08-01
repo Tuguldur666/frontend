@@ -35,18 +35,21 @@ const TeachSettings = () => {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         const { firstName, lastName, bio, email } = res.data;
+        console.log("Fetched teacher info:", res.data);
         setFormData((prev) => ({
-          ...prev,
-          firstName,
-          lastName,
-          bio,
-          email,
-        }));
+  ...prev,
+  firstName: firstName || "",
+  lastName: lastName || "",
+  bio: bio || "",
+  email: email || "",
+}));
+
       } catch (err) {
         console.error("Error fetching teacher info:", err);
       }
     };
-console.log("accessToken in context:", accessToken);
+// console.log("accessToken in context:", accessToken);
+
 
     fetchTeacherInfo();
   }, [accessToken]);
