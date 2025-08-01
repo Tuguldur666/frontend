@@ -197,7 +197,7 @@ function Home() {
                   marginTop: "30px",
                 }}
               >
-                Төлбөр төлuh
+                Төлбөр төлөх
               </button>
             </div>
           </div>

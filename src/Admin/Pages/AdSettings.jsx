@@ -23,7 +23,7 @@ useEffect(() => {
   const fetchUser = async () => {
     setFetchLoading(true);
     try {
-      const res = await axiosInstance.post("/user/getUser");
+      const res = await axiosInstance.get("/user/getUser");
       const { firstName, lastName, email, phoneNumber } = res.data.user;
       setFormData({
         firstName: firstName || "",
