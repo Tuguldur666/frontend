@@ -3,16 +3,16 @@ import { useParams } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
 import "../css/Description.css";
 import { UserContext } from "../UserContext";
-import ShopHeader from "./ShopHeader";  // import the header
+import ShopHeader from "./ShopHeader"; // import the header
 
 const Description = () => {
   const { kitId } = useParams();
-  const { user } = useContext(UserContext);
+  const { accessToken } = useContext(UserContext);
 
   const [kit, setKit] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [mainImage, setMainImage] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(''); // to pass to header
+  const [searchTerm, setSearchTerm] = useState(""); // to pass to header
 
   useEffect(() => {
     if (!kitId) {
@@ -43,11 +43,24 @@ const Description = () => {
   const handleAddToCart = () => {
     if (!kit) return;
 
+    if (quantity < 1) {
+      alert("Quantity must be at least 1");
+      return;
+    }
+
     axiosInstance
-      .post("/store/add-to-cart", {
-        productId: kit._id,
-        quantity,
-      })
+      .post(
+        "/store/addItemToCart",
+        {
+          productId: kit._id,
+          quantity,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
       .then(() => {
         alert("Added to cart!");
       })
@@ -69,11 +82,7 @@ const Description = () => {
         <div className="product-images">
           <div className="main-image">
             {mainImage ? (
-              <img
-                src={mainImage}
-                alt={kit.name}
-                className="product-main-img"
-              />
+              <img src={mainImage} alt={kit.name} className="product-main-img" />
             ) : (
               <div>No image available</div>
             )}
