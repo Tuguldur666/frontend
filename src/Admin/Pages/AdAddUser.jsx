@@ -30,7 +30,6 @@ function AdAddUser() {
     setIsLoading(true);
 
     try {
-
       const token = localStorage.getItem("accessToken");
       // console.log("Sending token:", token);
 
@@ -51,7 +50,7 @@ function AdAddUser() {
         }
       );
 
-      setSuccess("Хэрэглэгч амжилттай нэмэгдlee!");
+      setSuccess("Хэрэглэгч амжилттай нэмэгдлээ!");
       setFirstName("");
       setLastName("");
       setEmail("");
@@ -83,19 +82,19 @@ function AdAddUser() {
 
         <input
           type="text"
-          placeholder="Нэр"
+          placeholder="Овог"
           className="input"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
           onKeyPress={handleKeyPress}
           disabled={isLoading}
         />
         <input
           type="text"
-          placeholder="Овог"
+          placeholder="Нэр"
           className="input"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
           onKeyPress={handleKeyPress}
           disabled={isLoading}
         />

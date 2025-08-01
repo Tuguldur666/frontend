@@ -184,7 +184,7 @@ function Home() {
               <p>4-р хичээлээс эхлэх</p>
               <p>Дэлгэрэнгүй хичээлүүд</p>
               <p>Багшийн зөвөлгөө</p>
-              <p>Удаан хугацаагаар үзeh</p>
+              <p>Удаан хугацаагаар үзэх</p>
               <button
                 style={{
                   backgroundColor: "white",
@@ -197,7 +197,7 @@ function Home() {
                   marginTop: "30px",
                 }}
               >
-                Төлбөр төлuh
+                Төлбөр төлөх
               </button>
             </div>
           </div>

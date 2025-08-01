@@ -1,6 +1,6 @@
 .home-container {
   /* font-family: "Arial", sans-serif; */
-  font-family: Georgia, "Times New Roman", Times, serif;
+  font-family: 'Roboto', sans-serif;
   padding: 0 150px;
 }
 
@@ -23,7 +23,7 @@
 .logoo {
   display: flex;
   align-items: center;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto', sans-serif;
   /* width: 200px; */
   /* margin-left: 70px; */
 }
@@ -282,7 +282,7 @@
 .footer {
   background-color: #f9f9f9;
   padding: 60px 150px 30px 150px;
-  font-family: "Arial", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .footer-main {
