@@ -1,178 +1,283 @@
-  container: {
-    backgroundColor: '#fff',
-    minHeight: '100vh',
-    padding: '20px',
-    fontFamily: 'Arial, sans-serif'
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '30px',
-    paddingBottom: '15px',
-    borderBottom: '2px solid #000'
-  },
-  backIcon: {
-    width: '24px',
-    height: '24px',
-    color: '#000',
-    marginRight: '15px',
-    cursor: 'pointer'
-  },
-  headerTitle: {
-    fontSize: '24px',
-    fontWeight: 'bold',
-    color: '#000',
-    margin: 0
-  },
-  mainContent: {
-    display: 'flex',
-    gap: '40px'
-  },
-  cartSection: {
-    flex: 1
-  },
-  cartTitle: {
-    fontSize: '20px',
-    fontWeight: 'bold',
-    color: '#000',
-    margin: '0 0 10px 0'
-  },
-  cartSubtitle: {
-    color: '#000',
-    marginBottom: '25px',
-    fontSize: '14px'
-  },
-  cartItems: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '15px'
-  },
-  cartItem: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '15px',
-    border: '2px solid #000',
-    borderRadius: '8px',
-    backgroundColor: '#fff'
-  },
-  checkbox: {
-    width: '18px',
-    height: '18px',
-    marginRight: '15px',
-    accentColor: '#000'
-  },
-  itemImage: {
-    width: '60px',
-    height: '60px',
-    border: '2px solid #000',
-    borderRadius: '6px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: '15px',
-    backgroundColor: '#fff'
-  },
-  itemName: {
-    flex: 1,
-    fontSize: '16px',
-    fontWeight: '500',
-    color: '#000'
-  },
-  quantityControls: {
-    display: 'flex',
-    alignItems: 'center',
-    marginRight: '20px'
-  },
-  quantityButton: {
-    width: '32px',
-    height: '32px',
-    border: '1px solid #000',
-    backgroundColor: '#fff',
-    color: '#000',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    fontSize: '16px',
-    fontWeight: 'bold'
-  },
-  quantityDisplay: {
-    width: '50px',
-    height: '32px',
-    border: '1px solid #000',
-    borderLeft: 'none',
-    borderRight: 'none',
-    backgroundColor: '#fff',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '16px',
-    fontWeight: '500',
-    color: '#000'
-  },
-  itemPrice: {
-    fontSize: '16px',
-    fontWeight: '500',
-    color: '#000',
-    marginRight: '15px',
-    minWidth: '80px'
-  },
-  deleteButton: {
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    padding: '5px'
-  },
-  paymentSection: {
-    width: '320px'
-  },
-  paymentContainer: {
-    backgroundColor: '#000',
-    color: '#fff',
-    padding: '25px',
-    borderRadius: '8px'
-  },
-  paymentTitle: {
-    fontSize: '18px',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: '25px',
-    margin: '0 0 25px 0'
-  },
-  paymentMethods: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '15px'
-  },
-  paymentMethod: {
-    backgroundColor: '#e5e5e5',
-    padding: '20px',
-    borderRadius: '8px',
-    textAlign: 'center',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s'
-  },
-  paymentIcon: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginBottom: '12px',
-    height: '20px'
-  },
-  transferIcon: {
-    width: '30px',
-    height: '3px',
-    backgroundColor: '#000',
-    position: 'relative'
-  },
-  qpayIcon: {
-    width: '30px',
-    height: '3px',
-    backgroundColor: '#000'
-  },
-  paymentMethodText: {
-    color: '#000',
-    fontSize: '12px',
-    fontWeight: 'bold',
-    lineHeight: '1.2'
+/* Shopping Cart Styles */
+.shopping-cart-container {
+  background-color: #fff;
+  min-height: 100vh;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.shopping-cart-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #000;
+}
+
+.back-icon {
+  width: 24px;
+  height: 24px;
+  color: #000;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  margin: 0;
+}
+
+.main-content {
+  display: flex;
+  gap: 40px;
+}
+
+.cart-section {
+  flex: 1;
+}
+
+.cart-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+  margin: 0 0 10px 0;
+}
+
+.cart-subtitle {
+  color: #000;
+  margin-bottom: 25px;
+  font-size: 14px;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.cart-item-checkbox {
+  width: 18px;
+  height: 18px;
+  margin-right: 15px;
+  accent-color: #000;
+}
+
+.item-image {
+  width: 60px;
+  height: 60px;
+  border: 2px solid #000;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  background-color: #fff;
+}
+
+.item-name {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.quantity-button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #000;
+  background-color: #fff;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.quantity-button:hover {
+  background-color: #f5f5f5;
+}
+
+.quantity-button:first-child {
+  border-radius: 4px 0 0 4px;
+}
+
+.quantity-button:last-child {
+  border-radius: 0 4px 4px 0;
+}
+
+.quantity-display {
+  width: 50px;
+  height: 32px;
+  border: 1px solid #000;
+  border-left: none;
+  border-right: none;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+}
+
+.item-price {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+  margin-right: 15px;
+  min-width: 80px;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.delete-button:hover {
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.payment-section {
+  width: 320px;
+}
+
+.payment-container {
+  background-color: #000;
+  color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+}
+
+.payment-title {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 0 25px 0;
+}
+
+.payment-methods {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.payment-method {
+  background-color: #e5e5e5;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.payment-method:hover {
+  background-color: #d0d0d0;
+}
+
+.payment-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+  height: 20px;
+}
+
+.transfer-icon {
+  width: 30px;
+  height: 3px;
+  background-color: #000;
+  position: relative;
+}
+
+.transfer-icon::before {
+  content: '';
+  position: absolute;
+  right: -8px;
+  top: -2px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid #000;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+
+.qpay-icon {
+  width: 30px;
+  height: 3px;
+  background-color: #000;
+  position: relative;
+}
+
+.qpay-icon::before,
+.qpay-icon::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.qpay-icon::before {
+  right: -8px;
+  top: -2px;
+  border-left: 8px solid #000;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+
+.qpay-icon::after {
+  left: -8px;
+  top: -2px;
+  border-right: 8px solid #000;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+
+.payment-method-text {
+  color: #000;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+    gap: 20px;
   }
-};
+  
+  .payment-section {
+    width: 100%;
+  }
+  
+  .cart-item {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .item-name {
+    min-width: 100%;
+    order: -1;
+  }
+}
