@@ -14,7 +14,7 @@ import ShoppingCart from "./Shop/Components/ShoppingCart";
 import StudentPortal from "./components/StudentPortal";
 import LessonFree from "./components/LessonFree";
 import Assignments from "./components/Assignments";
-import ForgotPassword from "./components/ForgotPassword"; // ✅ make sure this is correctly imported
+import ForgotPassword from "./components/ForgotPassword";
 
 import AdAddUser from "./Admin/Pages/AdAddUser";
 import AdContent from "./Admin/Pages/AdContent";
@@ -25,6 +25,8 @@ import AdShop from "./Admin/Pages/AdShop";
 import AdTeachers from "./Admin/Pages/AdTeachers";
 import AdminLayout from "./Admin/Components/AdminLayout";
 import AdFinancial from "./Admin/Pages/AdFinancial";
+import AdAllProducts from "./Admin/Pages/AdAllProducts";  // <-- Added import here
+import AddProduct from "./Admin/Pages/AddProduct";
 
 import TeachLayout from "./Teacher/components/TeachLayout";
 import TeachDashboard from "./Teacher/pages/TeachDashboard";
@@ -36,7 +38,6 @@ import Intermediate from "./Teacher/pages/Intermediate";
 import Pro from "./Teacher/pages/Professional";
 import Advanced from "./Teacher/pages/Advanced";
 import Sidebar from "./components/Sidebar";
-import AddProduct from "./Admin/Pages/AddProduct";
 
 import RequireAuth from "./RequireAuth";
 import { useAxiosInterceptor } from "./axiosInterceptor";
@@ -73,14 +74,13 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />{" "}
-      {/* ✅ Added this line */}
+      <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/otp-verification" element={<OTPVerification />} />
       <Route path="/shop" element={<Shop />} />
       <Route path="/cart" element={<ShoppingCart />} />
       <Route path="/description/:kitId" element={<Description />} />
       <Route path="/subject" element={<Subject />} />
-      {/* Admin routes */}
+
       {/* Admin routes - protected */}
       <Route
         path="/admin"
@@ -94,14 +94,17 @@ function App() {
         <Route path="settings" element={<AdSettings />} />
         <Route path="addUser" element={<AdAddUser />} />
         <Route path="shop" element={<AdShop />} />
+        <Route path="all-products" element={<AdAllProducts />} /> {/* <-- Added route */}
         <Route path="teacher" element={<AdTeachers />} />
         <Route path="content" element={<AdContent />} />
         <Route path="financial" element={<AdFinancial />} />
         <Route path="add-product" element={<AddProduct />} />
       </Route>
-      {/* Admin login remains public */}
+
+      {/* Admin login (public) */}
       <Route path="/admin/login" element={<AdLogin />} />
-      {/* Teacher routes */}
+
+      {/* Teacher routes - protected */}
       <Route
         path="/teacher"
         element={
@@ -119,6 +122,7 @@ function App() {
         <Route path="course/advanced" element={<Advanced />} />
         <Route path="course/professional" element={<Pro />} />
       </Route>
+
       {/* Protected routes with sidebar */}
       <Route
         element={
@@ -132,7 +136,8 @@ function App() {
         <Route path="/lessons" element={<LessonFree />} />
         <Route path="/assignments" element={<Assignments />} />
       </Route>
-      {/* Redirect unknown routes */}
+
+      {/* Redirect unknown routes to home */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
