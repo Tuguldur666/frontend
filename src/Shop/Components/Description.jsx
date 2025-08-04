@@ -1,9 +1,18 @@
+<<<<<<< HEAD:src/components/Description.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Home, Search, ShoppingCart, ArrowLeft } from 'lucide-react';
 
 import '../css/Shop.css';
 import '../css/Description.css';
+=======
+import React, { useEffect, useState, useContext } from "react";
+import { useParams } from "react-router-dom";
+import axiosInstance from "../../axiosInstance";
+import "../css/Description.css";
+import { UserContext } from "../../UserContext";
+import ShopHeader from "./ShopHeader";
+>>>>>>> df196382a00877568f5a1093b085acbe5d4ae4e4:src/Shop/Components/Description.jsx
 
 const Description = () => {
   const [quantity, setQuantity] = useState(1);

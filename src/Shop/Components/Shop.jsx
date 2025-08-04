@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD:src/components/Shop.jsx
 import { Search, ShoppingCart, Home } from 'lucide-react';
+=======
+import axiosInstance from '../../axiosInstance';
+import ShopHeader from './ShopHeader';  // import header
+>>>>>>> df196382a00877568f5a1093b085acbe5d4ae4e4:src/Shop/Components/Shop.jsx
 import '../css/Shop.css';
 import drumImage from '../assets/drum.jpg';
 import axiosInstance from '../axiosInstance';
