@@ -9,17 +9,16 @@ const Beginner = () => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [courseInput, setCourseInput] = useState("");
-  const [videos, setVideos] = useState({}); // { courseTitle: [lessons] }
+  const [videos, setVideos] = useState({});
   const videoSectionRef = useRef(null);
 
-  // Load courses and videos from backend on mount
   useEffect(() => {
     if (!accessToken) return;
 
     axiosInstance
       .post(
         "/teacher/getOwnCourses",
-        {}, // no body needed here
+        {},
         { headers: { Authorization: `Bearer ${accessToken}` } }
       )
       .then((res) => {
@@ -30,7 +29,8 @@ const Beginner = () => {
             videosMap[course.title] = course.lessons || [];
           });
           setVideos(videosMap);
-          if (res.data.courses.length > 0) setSelectedCourse(res.data.courses[0].title);
+          if (res.data.courses.length > 0)
+            setSelectedCourse(res.data.courses[0].title);
         }
       })
       .catch((err) => {
@@ -90,7 +90,7 @@ const Beginner = () => {
     const formData = new FormData();
     formData.append("video", file);
     formData.append("courseId", courseObj._id);
-    formData.append("duration", 0); 
+    formData.append("duration", 0);
 
     axiosInstance
       .post("/teacher/uploadLesson", formData, {

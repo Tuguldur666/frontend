@@ -20,8 +20,11 @@
   color: white;
   padding-left: 20px;
   z-index: 1000;
+  transition: transform 0.3s ease-in-out;
 }
-
+.admin-main {
+  flex-grow: 1;
+}
 .admin-content {
   margin-left: 250px;
   height: 100%;
@@ -30,7 +33,9 @@
   box-sizing: border-box;
   flex-grow: 1;
 }
-
+.hamburger-button {
+  display: none;
+}
 .sidebar-header h2 {
   font-size: 22px;
   margin-bottom: 25px;
@@ -64,9 +69,12 @@
   font-weight: 600;
 }
 
-.logout-link {
+.logoutt-link {
   margin-top: 20px;
   color: rgb(254, 116, 129);
+}
+.logoutt-link:hover{
+  color: red;
 }
 
 .dashboard {
@@ -201,7 +209,7 @@
   padding: 0;
   margin-top: 20px;
   max-width: 500px;
-  font-family:'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .teacher-list li {
@@ -287,7 +295,6 @@
   transform: translateX(100%);
 }
 
-
 .slide-in {
   transform: translateX(0%);
 }
@@ -348,10 +355,6 @@
   opacity: 1;
   pointer-events: auto;
 }
-
-
-
-
 
 @keyframes slideIn {
   from {
@@ -448,7 +451,7 @@
   color: white;
 }
 textarea {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
   padding: 8px;
   border-radius: 6px;
@@ -457,7 +460,7 @@ textarea {
 }
 
 form button.btn-edit {
-  background-color: #2196F3; 
+  background-color: #2196f3;
   color: white;
   border: none;
   padding: 8px 14px;
@@ -468,22 +471,23 @@ form button.btn-edit {
 @media (max-width: 768px) {
   .admin-sidebar {
     position: fixed;
-    width: 100%;
-    height: auto;
     top: 0;
     left: 0;
-    z-index: 1001;
-    display: flex;
-    justify-content: space-between;
-    padding: 15px 20px;
-    flex-wrap: wrap;
-    background-color: #1f2937;
+    z-index: 1100;
+    transform: translateX(-100%);
+    width: 220px;
+    height: 100vh;
+  }
+.admin-sidebar.open {
+    transform: translateX(0);
+  }
+  .admin-sidebar.mobile-hidden {
+    transform: translateX(-100%);
   }
 
   .admin-content {
     margin-left: 0;
-    margin-top: 200px; 
-    padding: 15px;
+    padding: 20px;
   }
 
   .sidebar-nav ul {
@@ -492,21 +496,48 @@ form button.btn-edit {
     gap: 10px;
     padding-top: 10px;
   }
-
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1050;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  .hamburger-button {
+    display: inline-flex;
+    background: none;
+    border: none;
+    color: #1f2937;
+    padding: 8px;
+    cursor: pointer;
+  }
+  .sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1050;
+  }
   .sidebar-link {
     padding: 8px 12px;
     font-size: 14px;
   }
-  .stat-grid{
+  .stat-grid {
     margin-top: 100px;
   }
-  .login-container{
+  .login-container {
     margin-top: 50px;
   }
-  .settings-sidebar-custom{
+  .settings-sidebar-custom {
     margin-top: 50px;
   }
-  .content-page{
+  .content-page {
     margin-top: 50px;
   }
 }

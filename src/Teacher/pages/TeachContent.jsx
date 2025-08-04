@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 import "../../Admin/Css/Admin.css";
-import axiosInstance from "../../axiosInstance"; 
+import axiosInstance from "../../axiosInstance";
 import { UserContext } from "../../UserContext";
 
 function TeachContent() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { user } = useContext(UserContext); 
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -16,10 +16,12 @@ function TeachContent() {
 
       try {
         const res = await axiosInstance.post("/teacher/getOwnCourses");
-// console.log("Fetched courses:", res.data);
+        // console.log("Fetched courses:", res.data);
         setCourses(res.data.data);
       } catch (err) {
-        setError(err.response?.data?.message || "Сургалтуудыг авахад алдаа гарлаа");
+        setError(
+          err.response?.data?.message || "Сургалтуудыг авахад алдаа гарлаа"
+        );
       } finally {
         setLoading(false);
       }
@@ -61,7 +63,9 @@ function TeachContent() {
                   <br />
                   {course.students} Сурагчид
                 </td>
-                <td className="paid">₮{(course.revenue || 0).toLocaleString()}</td>
+                <td className="paid">
+                  ₮{(course.revenue || 0).toLocaleString()}
+                </td>
                 <td>{course.rating}</td>
                 <td>{course.lastUpdated}</td>
                 <td>

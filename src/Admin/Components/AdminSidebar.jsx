@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "../Css/Admin.css";
 import { UserContext } from "../../UserContext";
 
-const AdminSidebar = () => {
+const AdminSidebar = ({ isOpen, sidebarRef, closeSidebar }) => {
   const { user, logout } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -11,9 +11,13 @@ const AdminSidebar = () => {
     logout();
     navigate("/admin/login");
   };
-
+  const handleLinkClick = () => {
+    if (window.innerWidth <= 768) {
+      closeSidebar();
+    }
+  };
   return (
-    <div className="admin-sidebar">
+     <div ref={sidebarRef} className={`admin-sidebar ${isOpen ? "open" : ""}`}>
       <div className="sidebar-header">
         <h2>
           {user?.firstName && user?.lastName
@@ -29,7 +33,7 @@ const AdminSidebar = () => {
               to="/admin/panel"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "active-link" : ""}`
-              }
+              }onClick={handleLinkClick}
             >
               🏠 Дашбоард
             </NavLink>
@@ -39,7 +43,7 @@ const AdminSidebar = () => {
               to="/admin/teacher"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "active-link" : ""}`
-              }
+              }onClick={handleLinkClick}
             >
               👩‍🏫 Багш
             </NavLink>
@@ -49,7 +53,7 @@ const AdminSidebar = () => {
               to="/admin/content"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "active-link" : ""}`
-              }
+              }onClick={handleLinkClick}
             >
               📚 Контент
             </NavLink>
@@ -59,7 +63,7 @@ const AdminSidebar = () => {
               to="/admin/shop"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "active-link" : ""}`
-              }
+              }onClick={handleLinkClick}
             >
               🛒 Дэлгүүр
             </NavLink>
@@ -69,7 +73,7 @@ const AdminSidebar = () => {
               to="/admin/financial"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "active-link" : ""}`
-              }
+              }onClick={handleLinkClick}
             >
               🛒 Санхүү
             </NavLink>
@@ -79,7 +83,7 @@ const AdminSidebar = () => {
               to="/admin/adduser"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "active-link" : ""}`
-              }
+              }onClick={handleLinkClick}
             >
               ➕ Хэрэглэгч нэмэх
             </NavLink>
@@ -89,7 +93,7 @@ const AdminSidebar = () => {
               to="/admin/settings"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "active-link" : ""}`
-              }
+              }onClick={handleLinkClick}
             >
               ⚙️ Тохиргоо
             </NavLink>
@@ -97,8 +101,13 @@ const AdminSidebar = () => {
           <li>
             <button
               onClick={handleLogout}
-              className="sidebar-link logout-link"
-              style={{ cursor: "pointer", background: "none", border: "none", padding: 0 }}
+              className="sidebar-link logoutt-link"
+              style={{
+                cursor: "pointer",
+                background: "none",
+                border: "none",
+                padding: 0,
+              }}
             >
               🚪 Logout
             </button>
