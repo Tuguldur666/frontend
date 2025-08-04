@@ -11,16 +11,14 @@ const AdAllProducts = () => {
   const [editingProductId, setEditingProductId] = useState(null);
   const [editFormData, setEditFormData] = useState({});
 
-  // Fetch products
   const fetchProducts = async () => {
     if (!accessToken) return;
     try {
       const response = await axiosInstance.get("/store/getAllProducts", {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-      const productsData = Array.isArray(response.data.data) ? response.data.data : [];
-      setProducts(productsData);
-    } catch (error) {
+      setProducts(Array.isArray(response.data.data) ? response.data.data : []);
+    } catch {
       setProducts([]);
     }
   };
@@ -29,28 +27,21 @@ const AdAllProducts = () => {
     if (accessToken) fetchProducts();
   }, [accessToken]);
 
-  // Delete product
   const handleDelete = async (productId) => {
     if (!window.confirm("Энэ барааг устгахдаа итгэлтэй байна уу?")) return;
-
-    if (!accessToken) {
-      alert("Unauthorized: No token found");
-      return;
-    }
+    if (!accessToken) return alert("Unauthorized");
 
     try {
-      // IMPORTANT: axios.delete requires the body inside the config as 'data' property
       await axiosInstance.delete("/store/deleteProduct", {
         headers: { Authorization: `Bearer ${accessToken}` },
         data: { productId },
       });
       fetchProducts();
-    } catch (error) {
+    } catch {
       alert("Барааг устгахад алдаа гарлаа.");
     }
   };
 
-  // Start editing a product
   const handleEditClick = (product) => {
     setEditingProductId(product._id);
     setEditFormData({
@@ -63,24 +54,20 @@ const AdAllProducts = () => {
     });
   };
 
-  // Cancel editing
   const handleCancelEdit = () => {
     setEditingProductId(null);
     setEditFormData({});
   };
 
-  // Handle input changes (title, price, category, thumbnail, description)
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Add new image URL input change
   const handleNewImageUrlChange = (e) => {
     setEditFormData((prev) => ({ ...prev, newImageUrl: e.target.value }));
   };
 
-  // Add new image to images array
   const handleAddImage = () => {
     const newUrl = editFormData.newImageUrl?.trim();
     if (newUrl && !editFormData.images.includes(newUrl)) {
@@ -92,7 +79,6 @@ const AdAllProducts = () => {
     }
   };
 
-  // Remove image from images array by index
   const handleRemoveImage = (index) => {
     setEditFormData((prev) => {
       const newImages = prev.images.filter((_, i) => i !== index);
@@ -104,14 +90,13 @@ const AdAllProducts = () => {
     });
   };
 
-  // Handle upload of additional images via file input
   const handleAdditionalImagesUpload = (e) => {
     const files = Array.from(e.target.files);
     files.forEach((file) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setEditFormData((prev) => {
-          if (prev.images.includes(reader.result)) return prev; // avoid duplicates
+          if (prev.images.includes(reader.result)) return prev;
           return {
             ...prev,
             images: [...(prev.images || []), reader.result],
@@ -122,20 +107,15 @@ const AdAllProducts = () => {
     });
   };
 
-  // Submit updated product
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-
-    if (!accessToken) {
-      alert("Unauthorized: No token found");
-      return;
-    }
+    if (!accessToken) return alert("Unauthorized");
 
     try {
       await axiosInstance.put(
         "/store/updateProduct",
         {
-          productId: editingProductId, // required by API
+          productId: editingProductId,
           title: editFormData.title,
           description: editFormData.description,
           thumbnail: editFormData.thumbnail,
@@ -149,66 +129,30 @@ const AdAllProducts = () => {
       );
       setEditingProductId(null);
       fetchProducts();
-    } catch (error) {
+    } catch {
       alert("Барааг шинэчлэхэд алдаа гарлаа.");
     }
   };
 
   return (
-    <div className="admin-products-container" style={{ padding: 24 }}>
-      <div
-        className="admin-header"
-        style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}
-      >
+    <div className="ad-product-container">
+      <div className="ad-product-header">
         <h2>Бүх бараанууд</h2>
         <button
           onClick={() => setShowAddModal(true)}
-          className="add-product-btn"
-          style={{ backgroundColor: "#4CAF50", color: "white", border: "none", padding: "10px 16px", borderRadius: 8, cursor: "pointer", fontSize: 16 }}
+          className="ad-product-add-btn"
         >
           + Бараа нэмэх
         </button>
       </div>
 
       {showAddModal && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 1000,
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "#fff",
-              padding: 20,
-              borderRadius: 12,
-              maxHeight: "90vh",
-              overflowY: "auto",
-              width: "90%",
-              maxWidth: 600,
-              position: "relative",
-            }}
-          >
+        <div className="ad-product-modal-overlay">
+          <div className="ad-product-modal">
             <button
+              className="ad-product-close-btn"
               onClick={() => setShowAddModal(false)}
-              style={{
-                position: "absolute",
-                top: 8,
-                right: 12,
-                fontSize: 24,
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-              }}
-              aria-label="Close modal"
+              aria-label="Close"
             >
               ×
             </button>
@@ -224,15 +168,15 @@ const AdAllProducts = () => {
         </div>
       )}
 
-      <table className="admin-product-table" style={{ borderCollapse: "collapse", width: "100%" }}>
+      <table className="ad-product-table">
         <thead>
-          <tr style={{ backgroundColor: "#f2f2f2" }}>
-            <th style={th}>Thumbnail</th>
-            <th style={th}>Name</th>
-            <th style={th}>Price</th>
-            <th style={th}>Images</th> {/* Replaces Inventory */}
-            <th style={th}>Category</th>
-            <th style={th}>Actions</th>
+          <tr>
+            <th>Thumbnail</th>
+            <th>Нэр</th>
+            <th>Үнэ</th>
+            <th>Зураг</th>
+            <th>Ангилал</th>
+            <th>Үйлдэл</th>
           </tr>
         </thead>
         <tbody>
@@ -245,17 +189,13 @@ const AdAllProducts = () => {
           ) : (
             products.map((product) => (
               <tr key={product._id}>
-                <td style={td}>
-                  <img
-                    src={product.thumbnail}
-                    alt="thumbnail"
-                    style={{ width: 60, height: 60, objectFit: "cover" }}
-                  />
+                <td>
+                  <img src={product.thumbnail} alt="thumb" className="ad-product-thumbnail" />
                 </td>
-                <td style={td}>
+                <td>
                   {editingProductId === product._id ? (
                     <input
-                      type="text"
+                      className="ad-product-input"
                       name="title"
                       value={editFormData.title}
                       onChange={handleInputChange}
@@ -264,9 +204,10 @@ const AdAllProducts = () => {
                     product.title || product.name
                   )}
                 </td>
-                <td style={td}>
+                <td>
                   {editingProductId === product._id ? (
                     <input
+                      className="ad-product-number"
                       type="number"
                       name="price"
                       value={editFormData.price}
@@ -276,113 +217,73 @@ const AdAllProducts = () => {
                     `₮${product.price}`
                   )}
                 </td>
-                <td style={td}>
+                <td>
                   {editingProductId === product._id ? (
                     <>
-                      {/* Upload multiple images input */}
                       <input
                         type="file"
-                        accept="image/*"
                         multiple
+                        accept="image/*"
                         onChange={handleAdditionalImagesUpload}
-                        style={{ marginBottom: 8, width: "100%" }}
+                        style={{ marginBottom: 8 }}
                       />
-
-                      {/* Editable images with delete buttons and clickable for thumbnail */}
-                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
-                        {editFormData.images && editFormData.images.length > 0 ? (
-                          editFormData.images.map((imgUrl, idx) => (
-                            <div
-                              key={idx}
-                              style={{ position: "relative", display: "inline-block" }}
+                      <div className="ad-product-img-grid">
+                        {editFormData.images?.map((imgUrl, idx) => (
+                          <div style={{ position: "relative" }} key={idx}>
+                            <img
+                              src={imgUrl}
+                              className={`ad-product-img-thumbnail ${
+                                editFormData.thumbnail === imgUrl ? "active" : ""
+                              }`}
+                              alt=""
+                              onClick={() =>
+                                setEditFormData((prev) => ({ ...prev, thumbnail: imgUrl }))
+                              }
+                              title="Click to set as thumbnail"
+                            />
+                            <button
+                              type="button"
+                              className="ad-product-remove-btn"
+                              onClick={() => handleRemoveImage(idx)}
                             >
-                              <img
-                                src={imgUrl}
-                                alt={`img-${idx}`}
-                                onClick={() =>
-                                  setEditFormData((prev) => ({
-                                    ...prev,
-                                    thumbnail: imgUrl,
-                                  }))
-                                }
-                                style={{
-                                  width: 60,
-                                  height: 60,
-                                  objectFit: "cover",
-                                  borderRadius: 4,
-                                  cursor: "pointer",
-                                  border:
-                                    editFormData.thumbnail === imgUrl
-                                      ? "2px solid blue"
-                                      : "1px solid #ccc",
-                                }}
-                                title="Click to set as thumbnail"
-                              />
-                              <button
-                                onClick={() => handleRemoveImage(idx)}
-                                style={{
-                                  position: "absolute",
-                                  top: -6,
-                                  right: -6,
-                                  backgroundColor: "red",
-                                  color: "white",
-                                  border: "none",
-                                  borderRadius: "50%",
-                                  width: 20,
-                                  height: 20,
-                                  cursor: "pointer",
-                                  fontWeight: "bold",
-                                  lineHeight: 1,
-                                }}
-                                aria-label="Remove image"
-                                type="button"
-                              >
-                                ×
-                              </button>
-                            </div>
-                          ))
-                        ) : (
-                          <span>Зураг байхгүй байна</span>
-                        )}
+                              ×
+                            </button>
+                          </div>
+                        ))}
                       </div>
-
                       <input
+                        className="ad-product-input"
                         type="text"
                         placeholder="Шинэ зурагны URL оруулна уу"
                         value={editFormData.newImageUrl || ""}
                         onChange={handleNewImageUrlChange}
-                        style={{ marginBottom: 8, width: "100%" }}
                       />
                       <button
                         type="button"
+                        className="ad-product-btn"
+                        style={{ marginTop: 8 }}
                         onClick={handleAddImage}
-                        style={{ marginBottom: 16 }}
                       >
                         Зураг нэмэх
                       </button>
                     </>
                   ) : (
-                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    <div className="ad-product-img-grid">
                       {(product.images || []).map((imgUrl, idx) => (
                         <img
                           key={idx}
                           src={imgUrl}
-                          alt={`img-${idx}`}
-                          style={{
-                            width: 60,
-                            height: 60,
-                            objectFit: "cover",
-                            borderRadius: 4,
-                          }}
+                          className="ad-product-img-thumbnail"
+                          alt=""
                         />
                       ))}
                     </div>
                   )}
                 </td>
-                <td style={td}>
+                <td>
                   {editingProductId === product._id ? (
                     <input
-                      type="text"
+                      className="ad-product-input"
                       name="category"
                       value={editFormData.category}
                       onChange={handleInputChange}
@@ -391,20 +292,31 @@ const AdAllProducts = () => {
                     product.category
                   )}
                 </td>
-                <td style={td}>
+                <td>
                   {editingProductId === product._id ? (
                     <>
-                      <button onClick={handleUpdateSubmit} style={{ marginRight: 8 }}>
+                      <button className="ad-product-btn" onClick={handleUpdateSubmit}>
                         Хадгалах
                       </button>
-                      <button onClick={handleCancelEdit}>Цуцлах</button>
+                      <button
+                        className="ad-product-btn ad-product-cancel-btn"
+                        onClick={handleCancelEdit}
+                      >
+                        Цуцлах
+                      </button>
                     </>
                   ) : (
                     <>
-                      <button onClick={() => handleEditClick(product)} style={{ marginRight: 8 }}>
+                      <button
+                        className="ad-product-btn"
+                        onClick={() => handleEditClick(product)}
+                      >
                         Засах
                       </button>
-                      <button onClick={() => handleDelete(product._id)} style={{ color: "red" }}>
+                      <button
+                        className="ad-product-btn ad-product-cancel-btn"
+                        onClick={() => handleDelete(product._id)}
+                      >
                         Устгах
                       </button>
                     </>
@@ -417,17 +329,6 @@ const AdAllProducts = () => {
       </table>
     </div>
   );
-};
-
-const th = {
-  border: "1px solid #ddd",
-  padding: "12px",
-  textAlign: "left",
-};
-
-const td = {
-  border: "1px solid #ddd",
-  padding: "12px",
 };
 
 export default AdAllProducts;
