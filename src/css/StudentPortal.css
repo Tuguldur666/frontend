@@ -2,7 +2,7 @@
 .student-portal {
   display: flex;
   height: 100vh;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Noto Sans Mongolian';
   background-color: #1a1a1a;
   color: #ffffff;
 }

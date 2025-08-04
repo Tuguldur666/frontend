@@ -2,7 +2,8 @@
 .assignments-page {
   display: flex;
   height: 100vh;
-font-family:'Roboto', sans-serif;  background-color: #f8fafc;
+  font-family: "Noto Sans Mongolian";
+  background-color: #f8fafc;
 }
 
 .main-content {
@@ -195,7 +196,7 @@ font-family:'Roboto', sans-serif;  background-color: #f8fafc;
   .main-content {
     margin-left: 220px;
   }
-  
+
   .assignments-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 18px;
@@ -206,33 +207,33 @@ font-family:'Roboto', sans-serif;  background-color: #f8fafc;
   .main-content {
     margin-left: 200px;
   }
-  
+
   .content-header {
     padding: 15px 20px;
   }
-  
+
   .content-body {
     padding: 20px;
   }
-  
+
   .assignments-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
-  
+
   .assignment-card {
     padding: 20px;
     min-height: 120px;
   }
-  
+
   .header-top {
     margin-bottom: 15px;
   }
-  
+
   .page-title {
     font-size: 16px;
   }
-  
+
   .tab-button {
     min-width: 120px;
     padding: 10px 16px;
@@ -244,40 +245,40 @@ font-family:'Roboto', sans-serif;  background-color: #f8fafc;
   .main-content {
     margin-left: 60px;
   }
-  
+
   .assignments-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   .content-header {
     padding: 12px 15px;
   }
-  
+
   .content-body {
     padding: 15px;
   }
-  
+
   .assignment-card {
     padding: 18px;
     min-height: 100px;
   }
-  
+
   .assignment-title {
     font-size: 14px;
   }
-  
+
   .header-top {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
   }
-  
+
   .tabs-container {
     width: 100%;
     overflow-x: auto;
   }
-  
+
   .tab-button {
     min-width: 100px;
     white-space: nowrap;

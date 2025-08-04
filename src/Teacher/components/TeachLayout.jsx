@@ -28,18 +28,21 @@ const TeachLayout = () => {
   return (
     <div style={{ display: "flex" }}>
       <div className="mobile-header">
-                <Menu
-                  id="menu-toggle"
-                  className="menu-icon"
-                  size={28}
-                  onClick={toggleSidebar}
-                />
-                <span className="mobile-title">Teacher</span>
-                <button className="notification-button">
-                  <Bell size={24} style={{backgroundColor:"transparent", color:"white"}}/>
-                  <span className="notification-badge">3</span>
-                </button>
-              </div>
+        <Menu
+          id="menu-toggle"
+          className="menu-icon"
+          size={28}
+          onClick={toggleSidebar}
+        />
+        <span className="mobile-title">Teacher</span>
+        <button className="notification-button">
+          <Bell
+            size={24}
+            style={{ backgroundColor: "transparent", color: "white" }}
+          />
+          <span className="notification-badge">3</span>
+        </button>
+      </div>
 
       <TeachSidebar
         isOpen={isSidebarOpen}
