@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import "../css/Home.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import Logo from "./Logo";
 import Header from "./Header";
+import Footer from "./Footer";
 function Home() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -31,17 +31,16 @@ function Home() {
               <button
                 className="hero-btn"
                 onClick={() => {
-                  navigate("/subject");
+                  navigate("/register");
                   window.scrollTo(0, 0);
                 }}
               >
-                Үнэгүй эхлэх
+                Эхлэх
               </button>
-              <button className="hero-btn">Хичээлүүд үзэх</button>
             </div>
           </div>
           <div className="hero-video">
-            <img src="/images/hg.jpg" alt="container" />
+            <img src="/images/sectionImg.jpg" alt="container" />
           </div>
         </section>
         <section className="second-hero">
@@ -55,7 +54,7 @@ function Home() {
           <div></div>{" "}
           <div className="feature-grid">
             <div className="feature-card">
-              <img src="/images/headIcon.png" alt="icon" />
+              <img src="/images/videoIcon.png" alt="icon" />
               <h3>Видео хичээлүүд</h3>
               <p>
                 Өндөр чанартай видео хичээлүүдээр тодорхой заавар авч, дахин
@@ -64,7 +63,7 @@ function Home() {
             </div>
 
             <div className="feature-card">
-              <img src="/images/headIcon.png" alt="icon" />
+              <img src="/images/teacherIcon.png" alt="icon" />
               <h3>Мэргэжлийн багш нар</h3>
               <p>
                 Олон жилийн туршлагатай, мэргэжсэн багш нарын удирдлага дор
@@ -73,7 +72,7 @@ function Home() {
             </div>
 
             <div className="feature-card">
-              <img src="/images/headIcon.png" alt="icon" />
+              <img src="/images/statisticIcon.png" alt="icon" />
               <h3>Ахиц хянах систем</h3>
               <p>
                 Өөрийн сурсан хичээл, оноо, шагналыг хянаж, дэвшлээ харах
@@ -82,7 +81,7 @@ function Home() {
             </div>
 
             <div className="feature-card">
-              <img src="/images/headIcon.png" alt="icon" />
+              <img src="/images/timeIcon.png" alt="icon" />
               <h3>Уян хатан цаг</h3>
               <p>
                 24/7 хүссэн цагааар хичээллэж, өөрийн хуваарьт тохируулан
@@ -91,7 +90,7 @@ function Home() {
             </div>
 
             <div className="feature-card">
-              <img src="/images/headIcon.png" alt="icon" />
+              <img src="/images/comIcon.png" alt="icon" />
               <h3>Багш-сурагч харилцаа</h3>
               <p>
                 Асуулт асуух, зөвлөгөө авах, туршлага хуваалцах боломжтой
@@ -99,13 +98,13 @@ function Home() {
               </p>
             </div>
 
-            <div className="feature-card">
+            {/* <div className="feature-card">
               <img src="/images/headIcon.png" alt="icon" />
               <h3>Нарийвчилсан статистик</h3>
               <p>
                 Өөрийн сурах процесс, цаг зарцуулалт, дэвшлийг дэлгэрэнгүй харах
               </p>
-            </div>
+            </div> */}
           </div>
         </section>
         <section className="third-hero">
@@ -140,133 +139,8 @@ function Home() {
             </div>
           </div>
         </section>
-        <section className="section-price">
-          <div className="second-hero-header">
-            <h2>Хичээлийн үнэ</h2>
-            <p>Тус бүр нь төлж, хүссэн хичээлээ ав</p>
-          </div>
-          <div className="price-cards">
-            <div
-              className="price-card"
-              style={{ backgroundColor: "white", color: "black" }}
-            >
-              <h3>Үнэгүй хичээлүүд</h3>
-              <h3>₮0</h3>
-              <p>Эхний 3 хичээл</p>
-              <p>Эхлэл хичээлүүд</p>
-              <p>Хөгжмийн зэмсэгтэй танилцах</p>
-              <p>Анхан шатны техник</p>
-              <button
-                onClick={() => {
-                  navigate("/subject");
-                  window.scrollTo(0, 0);
-                }}
-                style={{
-                  backgroundColor: "#1a202c",
-                  color: "white",
-                  padding: "12px 24px",
-                  border: "none",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  transition: " all 0.3s ease",
-                  marginTop: "30px",
-                }}
-              >
-                Одоо эхлэх
-              </button>
-            </div>
-            <div
-              className="price-card"
-              style={{ backgroundColor: "#1a202c", color: "white" }}
-            >
-              <h3>Хичээл тус бүр</h3>
-              <h3>₮5,000</h3>
-              <p>4-р хичээлээс эхлэх</p>
-              <p>Дэлгэрэнгүй хичээлүүд</p>
-              <p>Багшийн зөвөлгөө</p>
-              <p>Удаан хугацаагаар үзэх</p>
-              <button
-                style={{
-                  backgroundColor: "white",
-                  color: "black",
-                  padding: "12px 24px",
-                  border: "none",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  transition: " all 0.3s ease",
-                  marginTop: "30px",
-                }}
-              >
-                Төлбөр төлөх
-              </button>
-            </div>
-          </div>
-        </section>
       </div>
-      <section className="footer">
-        <div className="footer-header">
-          <div className="second-hero-header">
-            <h2>Хөгжмийн аялалаа өнөөдөр эхлүүлээрэй</h2>
-            <h3>Эхний 3 хичээл үнэгүй. Бүртгүүлж, хөгжмийн ертөнцөд орцгооё</h3>
-            <button
-              onClick={() => {
-                navigate("/subject");
-                window.scrollTo(0, 0);
-              }}
-            >
-              Үнэгүй эхлэх
-            </button>
-          </div>
-        </div>
-
-        <div className="footer-main">
-          <div className="footer-left">
-            <p className="footer-description">
-              Бөмбөр хөгжимийг орчин үеийн технологийн тусламжтай хүн бүрт
-              хүртээмжтэй болгох зорилготой.
-            </p>
-          </div>
-
-          <div className="footer-links">
-            <div className="footer-column">
-              <h3 className="footer-title">Холбоосууд</h3>
-              <ul className="footer-list">
-                <li>Хичээлүүд</li>
-                <li>Багш нар</li>
-                <li>Үнэ</li>
-              </ul>
-            </div>
-
-            <div className="footer-column">
-              <h3 className="footer-title">Хичээлүүд</h3>
-              <ul className="footer-list">
-                <li>Бөмбөр</li>
-                <li>Гитар</li>
-                <li>Төгөлдөр хуур</li>
-              </ul>
-            </div>
-
-            <div className="footer-column">
-              <h3 className="footer-title">Тусламж</h3>
-              <ul className="footer-list">
-                <li>Холбоо барих</li>
-                <li>Түгээмэл асуултууд</li>
-                <li>Дэмжлэг</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="footer-bottom">
-          <div className="footer-meta">
-            <p className="footer-tagline">
-              Монгол хэл дээрх хөгжмийн хичээлийн платформ
-            </p>
-            <p className="footer-copyright">©2025 Нүдэн Солюшн ХХК.</p>
-          </div>
-          <hr className="footer-divider" />
-        </div>
-      </section>
+      <Footer />
     </div>
   );
 }

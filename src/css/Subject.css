@@ -1,5 +1,4 @@
 .subject-container {
-  padding-top: 80px;
   font-family: 'Roboto', sans-serif;
   padding: 0 150px;
 }
@@ -130,28 +129,92 @@
   padding: 60px 100px;
 }
 
-.sub-footer {
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
-}
 
-.sub-footer-row {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 20px;
-}
+@media (max-width: 1023px) {
+  .subject-container {
+    padding: 0 30px;
+  }
 
-.sub-footer-row h4 {
-  font-size: 18px;
-  color: #1a202c;
-  margin: 0;
-}
+  .sub-section1 {
+    height: auto;
+    padding: 30px 20px;
+    margin-top: 60px;
+    text-align: center;
+  }
 
-.sub-footer-row p {
-  font-size: 14px;
-  color: #444;
-  margin: 0;
+  .sub-section-header h2 {
+    font-size: 24px;
+  }
+
+  .sub-section-header h3 {
+    font-size: 14px;
+  }
+
+  .sub-header-card {
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+  }
+
+  #subCard {
+    width: 80px;
+    height: 80px;
+    text-align: center;
+  }
+
+  .sub-section2-cards {
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .sub-section2-card {
+    width: 100%;
+    max-width: 330px;
+    padding: 20px;
+  }
+
+  .card-title {
+    font-size: 16px;
+  }
+
+  .card-desc,
+  .card-teacher {
+    font-size: 13px;
+  }
+
+  .card-meta {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .view-button {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+ 
+
+@media (max-width: 480px) {
+  .sub-section-header h2 {
+    font-size: 20px;
+  }
+
+  .sub-section-header h3 {
+    font-size: 13px;
+  }
+
+  .card-meta span {
+    font-size: 12px;
+  }
+
+  .view-button {
+    font-size: 13px;
+  }
+
+  .card-video-player video {
+    height: auto;
+  }
+}
 }

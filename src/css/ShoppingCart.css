@@ -3,7 +3,7 @@
 .cart-container {
   min-height: 100vh;
   background-color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: "Roboto", sans-serif;
   padding: 20px;
   display: flex;
   justify-content: center;
@@ -288,36 +288,36 @@
   .cart-container {
     padding: 12px;
   }
-  
+
   .cart-content {
     flex-direction: column;
     padding: 16px;
     gap: 24px;
   }
-  
+
   .cart-section {
     padding-right: 0;
   }
-  
+
   .cart-item {
     flex-wrap: wrap;
     gap: 12px;
     padding: 16px 12px;
   }
-  
+
   .item-details {
     min-width: 120px;
   }
-  
+
   .payment-section {
     min-width: auto;
   }
-  
+
   .payment-options {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .payment-option {
     width: 100%;
     max-width: 200px;
@@ -328,20 +328,20 @@
   .cart-item {
     padding: 12px;
   }
-  
+
   .item-image {
     width: 50px;
     height: 40px;
   }
-  
+
   .payment-card {
     padding: 20px 16px;
   }
-  
+
   .payment-title {
     font-size: 16px;
   }
-  
+
   .cart-title {
     font-size: 20px;
   }
