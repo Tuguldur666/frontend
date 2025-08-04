@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD:src/components/Shop.jsx
+import { Search, ShoppingCart, Home } from 'lucide-react';
+=======
 import axiosInstance from '../../axiosInstance';
 import ShopHeader from './ShopHeader';  // import header
+>>>>>>> df196382a00877568f5a1093b085acbe5d4ae4e4:src/Shop/Components/Shop.jsx
 import '../css/Shop.css';
+import drumImage from '../assets/drum.jpg';
+import axiosInstance from '../axiosInstance';
 
 const Shop = () => {
   const [kits, setKits] = useState([]);
@@ -19,7 +25,7 @@ const Shop = () => {
     const fetchProducts = async () => {
       try {
         const response = await axiosInstance.get('/store/getAllProducts');
-        setKits(response.data.data || []);
+        setKits(response.data.products || []); // Assuming the API returns { products: [...] }
       } catch (err) {
         console.error('Failed to fetch products:', err);
       }
@@ -38,29 +44,56 @@ const Shop = () => {
   };
 
   const DrumKitCard = ({ kit, isSelected }) => (
-    <div
+    <div 
       className={`drum-kit-card ${isSelected ? 'selected' : ''}`}
       onClick={() => handleKitSelect(kit._id)}
       style={{ cursor: 'pointer' }}
     >
       <div className="drum-kit-image">
-        <img src={kit.thumbnail} alt={kit.title} className="drum-kit-photo" />
+        <img src={drumImage} alt="Drum Kit" className="drum-kit-photo" />
       </div>
       <div className="drum-kit-info">
-        <h3 className="drum-kit-name">{kit.title}</h3>
-        <p className="drum-kit-price">{kit.price}₮</p>
+        <h3 className="drum-kit-name">{kit.name}</h3>
+        <p className="drum-kit-price">{kit.price}</p>
       </div>
     </div>
   );
 
   return (
     <div className="shop-container">
-      {/* Use ShopHeader */}
-      <ShopHeader searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <div className="shop-header-simple">
+        <button
+          className="back-home-button"
+          onClick={() => navigate('/')}
+          aria-label="Back to home"
+        >
+          <Home size={20} />
+        </button>
+
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Хайх"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="search-input"
+          />
+          <Search className="search-icon" size={16} />
+        </div>
+        
+        <button
+          className="cart-button"
+          onClick={() => navigate('/cart')}
+          aria-label="Go to cart"
+        >
+          <ShoppingCart size={20} />
+          <span>Сагс</span>
+        </button>
+      </div>
 
       <main className="shop-main">
         <div className="category-filter">
-          <div
+          <div 
             className="filter-dropdown"
             onClick={() => setDropdownOpen(!dropdownOpen)}
             tabIndex={0}
@@ -77,9 +110,7 @@ const Shop = () => {
                 {categories.map((cat) => (
                   <li
                     key={cat}
-                    className={`dropdown-item ${
-                      cat === selectedCategory ? 'selected' : ''
-                    }`}
+                    className={`dropdown-item ${cat === selectedCategory ? 'selected' : ''}`}
                     onClick={() => handleCategorySelect(cat)}
                     role="option"
                     aria-selected={cat === selectedCategory}
@@ -95,12 +126,8 @@ const Shop = () => {
 
         <div className="products-grid">
           {kits
-            .filter(
-              (kit) =>
-                kit.title?.toLowerCase().includes(searchTerm.toLowerCase()) &&
-                (selectedCategory === 'Бөмбөр'
-                  ? true
-                  : kit.category?.toLowerCase() === selectedCategory.toLowerCase())
+            .filter((kit) =>
+              kit.name.toLowerCase().includes(searchTerm.toLowerCase())
             )
             .map((kit) => (
               <DrumKitCard
@@ -108,7 +135,7 @@ const Shop = () => {
                 kit={kit}
                 isSelected={selectedKit === kit._id}
               />
-            ))}
+          ))}
         </div>
       </main>
     </div>

@@ -14,7 +14,7 @@ import ShoppingCart from "./Shop/Components/ShoppingCart";
 import StudentPortal from "./components/StudentPortal";
 import LessonFree from "./components/LessonFree";
 import Assignments from "./components/Assignments";
-import ForgotPassword from "./components/ForgotPassword";
+import ForgotPassword from "./components/ForgotPassword"; // ✅ make sure this is correctly imported
 
 import AdAddUser from "./Admin/Pages/AdAddUser";
 import AdContent from "./Admin/Pages/AdContent";
@@ -25,7 +25,6 @@ import AdShop from "./Admin/Pages/AdShop";
 import AdTeachers from "./Admin/Pages/AdTeachers";
 import AdminLayout from "./Admin/Components/AdminLayout";
 import AdFinancial from "./Admin/Pages/AdFinancial";
-import AdAllProducts from "./Admin/Pages/AdAllProducts";  // <-- added this import
 
 import TeachLayout from "./Teacher/components/TeachLayout";
 import TeachDashboard from "./Teacher/pages/TeachDashboard";
@@ -99,7 +98,6 @@ function App() {
         <Route path="content" element={<AdContent />} />
         <Route path="financial" element={<AdFinancial />} />
         <Route path="add-product" element={<AddProduct />} />
-        <Route path="all-products" element={<AdAllProducts />} /> {/* <-- added this */}
       </Route>
       {/* Admin login remains public */}
       <Route path="/admin/login" element={<AdLogin />} />

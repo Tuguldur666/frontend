@@ -1,156 +1,112 @@
+<<<<<<< HEAD:src/components/Description.jsx
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Home, Search, ShoppingCart, ArrowLeft } from 'lucide-react';
+
+import '../css/Shop.css';
+import '../css/Description.css';
+=======
 import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../axiosInstance";
 import "../css/Description.css";
 import { UserContext } from "../../UserContext";
 import ShopHeader from "./ShopHeader";
+>>>>>>> df196382a00877568f5a1093b085acbe5d4ae4e4:src/Shop/Components/Description.jsx
 
 const Description = () => {
-  const { kitId } = useParams();
-  const { accessToken } = useContext(UserContext);
-
-  const [kit, setKit] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [mainImage, setMainImage] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(""); // to pass to header
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!kitId) {
-      console.error("No product id found in params");
-      return;
-    }
-
-    axiosInstance
-      .post("/store/getProductById", { productId: kitId })
-      .then((res) => {
-        if (res.data.success && res.data.data) {
-          setKit(res.data.data);
-
-          if (res.data.data.image) {
-            setMainImage(res.data.data.image);
-          } else if (res.data.data.images && res.data.data.images.length > 0) {
-            setMainImage(res.data.data.images[0]);
-          }
-        } else {
-          console.error("Product not found or response malformed");
-        }
-      })
-      .catch((err) => {
-        console.error("Failed to fetch product:", err);
-      });
-  }, [kitId]);
-
-  const handleAddToCart = () => {
-    if (!kit) return;
-
-    if (quantity < 1) {
-      alert("Quantity must be at least 1");
-      return;
-    }
-
-    axiosInstance
-      .post(
-        "/store/addItemToCart",
-        {
-          productId: kit._id,
-          quantity,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      )
-      .then(() => {
-        alert("Added to cart!");
-      })
-      .catch((err) => {
-        console.error("Error adding to cart:", err);
-        alert("Failed to add to cart.");
-      });
-  };
-
-  if (!kit) return <div className="description-loading">Loading...</div>;
+  const increaseQuantity = () => setQuantity((prev) => prev + 1);
+  const decreaseQuantity = () => quantity > 1 && setQuantity((prev) => prev - 1);
 
   return (
-    <div className="description-container">
-      {/* Use ShopHeader here */}
-      <ShopHeader searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+    <div>
+      {/* Header with Back Button */}
+      <div className="shop-header-simple">
+        <button className="back-home-button" onClick={() => navigate('/shop')} aria-label="Back to shop">
+          <ArrowLeft size={20} />
+        </button>
 
-      {/* Rest of your Description content */}
+        <div className="search-container">
+          <input type="text" placeholder="Хайх" className="search-input" />
+          <Search className="search-icon" size={16} />
+        </div>
+
+        <button
+          className="cart-button"
+          onClick={() => navigate('/cart')}
+          aria-label="Go to cart"
+        >
+          <ShoppingCart size={20} />
+          <span>Сагс</span>
+        </button>
+      </div>
+
+      {/* Product Content */}
       <div className="main-content">
         <div className="product-images">
           <div className="main-image">
-            {mainImage ? (
-              <img src={mainImage} alt={kit.name} className="product-main-img" />
-            ) : (
-              <div>No image available</div>
-            )}
+            <img
+              src="https://images.unsplash.com/photo-1616627562176-0bbf81df06f0"
+              alt="Drum Kit"
+              className="product-main-img"
+            />
           </div>
           <div className="thumbnail-images">
-            {kit.images && kit.images.length > 0
-              ? kit.images.map((imgUrl, idx) => (
-                  <div
-                    key={idx}
-                    className="thumbnail"
-                    onClick={() => setMainImage(imgUrl)}
-                  >
-                    <img
-                      src={imgUrl}
-                      alt={`${kit.name} thumbnail ${idx + 1}`}
-                      className="thumbnail-img"
-                    />
-                  </div>
-                ))
-              : kit.image && (
-                  <div className="thumbnail">
-                    <img
-                      src={kit.image}
-                      alt={`${kit.name} thumbnail`}
-                      className="thumbnail-img"
-                    />
-                  </div>
-                )}
+            <div className="thumbnail">
+              <img
+                src="https://images.unsplash.com/photo-1616627562176-0bbf81df06f0"
+                alt="Thumbnail"
+                className="thumbnail-img"
+              />
+            </div>
           </div>
         </div>
 
         <div className="product-details">
-          <h2 className="product-title">{kit.name}</h2>
+          <h1 className="product-title">Drum Kit 6</h1>
+
+          <div className="rating">
+            <span className="star">★</span>
+            <span className="star">★</span>
+            <span className="star">★</span>
+            <span className="star">★</span>
+            <span className="star">☆</span>
+          </div>
 
           <div className="price">
-            <span className="price-label">Price:</span>
-            <span className="price-value">{kit.price}₮</span>
+            <span className="price-label">Үнэ:</span>
+            <span className="price-value">₮299,000</span>
           </div>
 
           <div className="description-section">
-            <h3 className="description-title">Description</h3>
-            <p className="specifications">{kit.description}</p>
+            <div className="description-title">Тайлбар</div>
+            <div className="features">
+              <p>– Анхан шатны сурагчдад тохиромжтой</p>
+              <p>– Үндсэн хичээлүүдийг багтаасан</p>
+            </div>
+            <div className="specifications">
+              <p>
+                Энэхүү хичээлийн багц нь анхан шатны сурагчдад зориулсан бөгөөд хөгжмийн
+                суурь мэдлэгийг агуулсан. Тус багц нь өөртөө онол, практик, дасгалуудыг
+                багтаадаг.
+              </p>
+            </div>
           </div>
 
           <div className="product-actions">
             <div className="quantity-control">
-              <label htmlFor="quantity" className="quantity-label">
-                Quantity:
-              </label>
-              <input
-                type="number"
-                id="quantity"
-                min="1"
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-                style={{
-                  width: "60px",
-                  padding: "5px",
-                  borderRadius: "4px",
-                  border: "1px solid #ddd",
-                }}
-              />
+              <span className="quantity-label">Тоо ширхэг:</span>
+              <button className="quantity-btn" onClick={decreaseQuantity}>-</button>
+              <span className="quantity-display">{quantity}</span>
+              <button className="quantity-btn" onClick={increaseQuantity}>+</button>
             </div>
 
             <div className="action-buttons">
-              <button className="btn-buy" onClick={handleAddToCart}>
-                Add to Cart
-              </button>
+              <button className="btn-wishlist">Сагсанд нэмэх</button>
+              <button className="btn-buy">Одоо авах</button>
             </div>
           </div>
         </div>

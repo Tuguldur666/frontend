@@ -2,7 +2,7 @@
 .student-portal {
   display: flex;
   height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   background-color: #1a1a1a;
   color: #ffffff;
 }

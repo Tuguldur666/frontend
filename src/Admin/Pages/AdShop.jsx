@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import "../Css/Admin.css";
 const AdShop = () => {
   const [activeTab, setActiveTab] = useState("Захиалга");
-  const navigate = useNavigate();
+const navigate = useNavigate();
   const orders = Array(15).fill({
+    
     name: "Yamaha E-5510",
     price: "₮3,399,000",
     status: "Төлөгдсөн",
@@ -17,6 +18,7 @@ const AdShop = () => {
     <table className="orders-table">
       <thead>
         <tr>
+          
           <th>Барааны нэр</th>
           <th>Үнэ</th>
           <th>Төлөв</th>
@@ -28,6 +30,7 @@ const AdShop = () => {
       <tbody>
         {orders.map((order, idx) => (
           <tr key={idx}>
+            
             <td>{order.name}</td>
             <td>{order.price}</td>
             <td className="paid">{order.status}</td>
@@ -55,12 +58,16 @@ const AdShop = () => {
       </div>
 
       <div className="tabs">
-        <button
-          className="tab-button"
-          onClick={() => navigate("/admin/all-products")}
-        >
-          Бараануудыг харах
-        </button>
+        {/* {["Захиалга", "Хүргэгдсэн", "Хүргэгдээгүй"].map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`tab-button ${activeTab === tab ? "active-tab" : ""}`}
+          >
+            {tab}
+          </button>
+        ))} */}
+        <button className="tab-button" onClick={() => navigate("/admin/add-product")}>Бараа нэмэх</button>
       </div>
 
       <div className="orders-section">

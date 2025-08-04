@@ -38,7 +38,6 @@ const Beginner = () => {
       });
   }, [accessToken]);
 
-  // Add a new course via backend
   const handleAddCourse = () => {
     const newCourseTitle = courseInput.trim();
     if (!newCourseTitle) return alert("Курсын нэр оруулна уу.");
@@ -70,7 +69,6 @@ const Beginner = () => {
       });
   };
 
-  // Upload video to backend
   const handleVideoUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -86,14 +84,13 @@ const Beginner = () => {
       return;
     }
 
-    // Find course object to get courseId
     const courseObj = courses.find((c) => c.title === selectedCourse);
     if (!courseObj) return alert("Сонгогдсон курс олдсонгүй.");
 
     const formData = new FormData();
     formData.append("video", file);
     formData.append("courseId", courseObj._id);
-    formData.append("duration", 0); // optionally calculate video duration
+    formData.append("duration", 0); 
 
     axiosInstance
       .post("/teacher/uploadLesson", formData, {

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import "../css/Subject.css";
 import Header from "./Header";
+import Footer from "./Footer";
 
 function Subject() {
   const videoRefs = useRef([]);
@@ -22,6 +23,7 @@ function Subject() {
   };
 
   return (
+    <>
     <div className="subject-container">
       <Header />
       <section className="sub-section1">
@@ -46,7 +48,7 @@ function Subject() {
             <div className="sub-section2-card" key={index}>
               <div className="card-top-labels">
                 <span className="badge left">Анхан шат</span>
-                <span className="badge right">Үнэгүй</span>
+                <span className="badge right">Хичээл №1</span>
               </div>
               <div className="card-video-player">
                 <video
@@ -83,56 +85,10 @@ function Subject() {
           ))}
         </div>
       </section>
-      <section className="footer">
-        <div className="footer-main">
-          <div className="footer-left">
-            <p className="footer-description">
-              Бөмбөр хөгжимийг орчин үеийн технологийн тусламжтай хүн бүрт
-              хүртээмжтэй болгох зорилготой.
-            </p>
-          </div>
-
-          <div className="footer-links">
-            <div className="footer-column">
-              <h3 className="footer-title">Холбоосууд</h3>
-              <ul className="footer-list">
-                <li>Хичээлүүд</li>
-                <li>Багш нар</li>
-                <li>Үнэ</li>
-              </ul>
-            </div>
-
-            <div className="footer-column">
-              <h3 className="footer-title">Хичээлүүд</h3>
-              <ul className="footer-list">
-                <li>Бөмбөр</li>
-                <li>Гитар</li>
-                <li>Төгөлдөр хуур</li>
-              </ul>
-            </div>
-
-            <div className="footer-column">
-              <h3 className="footer-title">Тусламж</h3>
-              <ul className="footer-list">
-                <li>Холбоо барих</li>
-                <li>Түгээмэл асуултууд</li>
-                <li>Дэмжлэг</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="footer-bottom">
-          <div className="footer-meta">
-            <p className="footer-tagline">
-              Монгол хэл дээрх хөгжмийн хичээлийн платформ
-            </p>
-            <p className="footer-copyright">©2025 Нүдэн Солюшн ХХК.</p>
-          </div>
-          <hr className="footer-divider" />
-        </div>
-      </section>
+      
     </div>
+    <Footer/>
+    </>
   );
 }
 
