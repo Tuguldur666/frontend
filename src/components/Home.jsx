@@ -97,14 +97,6 @@ function Home() {
                 платформ
               </p>
             </div>
-
-            {/* <div className="feature-card">
-              <img src="/images/headIcon.png" alt="icon" />
-              <h3>Нарийвчилсан статистик</h3>
-              <p>
-                Өөрийн сурах процесс, цаг зарцуулалт, дэвшлийг дэлгэрэнгүй харах
-              </p>
-            </div> */}
           </div>
         </section>
         <section className="third-hero">

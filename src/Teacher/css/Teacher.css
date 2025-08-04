@@ -351,7 +351,7 @@
   left: 0;
   right: 0;
   z-index: 1100;
-  height: 60px;
+  height: 80px;
 }
 
 .mobile-title {
@@ -362,10 +362,42 @@
 
 .menu-icon {
   cursor: pointer;
-  background: white;
-  padding: 4px;
-  border-radius: 6px;
-  color: black;
+  color: #1f2937;
+}
+
+.mobile-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.notification-button {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1f2937;
+}
+
+.notification-button:hover {
+  color: #272654;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 @media (max-width: 768px) {
   .mobile-header {
@@ -379,6 +411,7 @@
     transform: translateX(-100%);
     width: 250px;
     padding: 20px;
+    margin-top: 30px;
   }
 
   .teach-sidebar.open {

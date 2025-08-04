@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import TeachSidebar from "./TeachSidebar";
 import { Outlet } from "react-router-dom";
-import { Menu } from "lucide-react";
+import { Menu, Bell } from "lucide-react";
 
 const TeachLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -27,16 +27,19 @@ const TeachLayout = () => {
 
   return (
     <div style={{ display: "flex" }}>
-      {/* Mobile Header */}
       <div className="mobile-header">
-        <Menu
-          id="menu-toggle"
-          className="menu-icon"
-          size={28}
-          onClick={toggleSidebar}
-        />
-        <span className="mobile-title">Teacher Panel</span>
-      </div>
+                <Menu
+                  id="menu-toggle"
+                  className="menu-icon"
+                  size={28}
+                  onClick={toggleSidebar}
+                />
+                <span className="mobile-title">Teacher</span>
+                <button className="notification-button">
+                  <Bell size={24} style={{backgroundColor:"transparent", color:"white"}}/>
+                  <span className="notification-badge">3</span>
+                </button>
+              </div>
 
       <TeachSidebar
         isOpen={isSidebarOpen}

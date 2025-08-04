@@ -50,7 +50,7 @@ function AdAddUser() {
         }
       );
 
-      setSuccess("Хэрэглэгч амжилттай нэмэгдлээ!");
+      setSuccess("Багш амжилттай нэмэгдлээ!");
       setFirstName("");
       setLastName("");
       setEmail("");
@@ -60,7 +60,7 @@ function AdAddUser() {
       setRole("teacher");
     } catch (err) {
       console.error("Full error response:", err.response);
-      setError(err.response?.data?.message || "Хэрэглэгч нэмэхэд алдаа гарлаа");
+      setError(err.response?.data?.message || "Багш нэмэхэд алдаа гарлаа");
     } finally {
       setIsLoading(false);
     }
@@ -77,8 +77,8 @@ function AdAddUser() {
       </button>
 
       <div className="login-box">
-        <h2>Шинэ хэрэглэгч нэмэх</h2>
-        <p className="subtitle">Хэрэглэгчийн мэдээлэл оруулна уу</p>
+        <h2>Шинэ багш нэмэх</h2>
+        <p className="subtitle">Багшийн мэдээлэл оруулна уу</p>
 
         <input
           type="text"
@@ -142,7 +142,6 @@ function AdAddUser() {
           disabled={isLoading}
         >
           <option value="teacher">teacher</option>
-          <option value="store">store</option>
         </select>
 
         {error && <div className="error-text">{error}</div>}

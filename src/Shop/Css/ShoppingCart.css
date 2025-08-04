@@ -3,7 +3,7 @@
   background-color: #fff;
   min-height: 100vh;
   padding: 20px;
-  font-family: Arial, sans-serif;
+  font-family: "Roboto", sans-serif;
   display: flex;
   flex-direction: column; /* Stack header and content vertically */
 }
@@ -203,7 +203,7 @@
 }
 
 .transfer-icon::before {
-  content: '';
+  content: "";
   position: absolute;
   right: -8px;
   top: -2px;
@@ -223,7 +223,7 @@
 
 .qpay-icon::before,
 .qpay-icon::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 0;
   height: 0;
