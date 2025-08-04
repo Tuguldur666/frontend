@@ -15,25 +15,18 @@ const Description = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    if (!kitId) {
-      console.error("No product id found in params");
-      return;
-    }
+    if (!kitId) return;
 
     axiosInstance
       .post("/store/getProductById", { productId: kitId })
       .then((res) => {
-        if (res.data.success && res.data.data) {
-          setKit(res.data.data);
-          const img = res.data.data.image || res.data.data.images?.[0];
-          setMainImage(img || null);
-        } else {
-          console.error("Product not found or response malformed");
+        const data = res.data?.data;
+        if (res.data.success && data) {
+          setKit(data);
+          setMainImage(data.image || data.images?.[0] || null);
         }
       })
-      .catch((err) => {
-        console.error("Failed to fetch product:", err);
-      });
+      .catch((err) => console.error("Failed to fetch product:", err));
   }, [kitId]);
 
   const handleAddToCart = async () => {
@@ -44,37 +37,59 @@ const Description = () => {
       return;
     }
 
+    // 1. Update localStorage cart items
+    const existingCart = JSON.parse(localStorage.getItem("guest_cart_items") || "[]");
+    const index = existingCart.findIndex((item) => item.productId === kit._id);
+
+    if (index !== -1) {
+      existingCart[index].quantity += quantity;
+    } else {
+      existingCart.push({ productId: kit._id, quantity });
+    }
+
+    localStorage.setItem("guest_cart_items", JSON.stringify(existingCart));
+    console.log("[Description] LocalStorage updated:", existingCart);
+
+    // 2. Get current guest cart ID from localStorage
+    let guestCartId = localStorage.getItem("guest_cart_id");
+
+    // Defensive cleanup: if guestCartId is empty string or invalid, remove it
+    if (guestCartId && typeof guestCartId === "string" && guestCartId.trim() === "") {
+      guestCartId = null;
+      localStorage.removeItem("guest_cart_id");
+      console.log("[Description] Removed invalid guest_cart_id from localStorage");
+    }
+
+    // 3. Prepare request body for backend
+    const body = {
+      productId: kit._id,
+      quantity,
+    };
+
+    if (!accessToken && guestCartId) {
+      body.cartId = guestCartId;
+    }
+
+    // 4. Setup headers if logged in
+    const headers = {};
+    if (accessToken) {
+      headers["Authorization"] = `Bearer ${accessToken}`;
+    }
+
+    // 5. Send addItemToCart request
     try {
-      const body = {
-        productId: kit._id,
-        quantity,
-      };
+      const res = await axiosInstance.post("/store/addItemToCart", body, { headers });
+      console.log("[Description] /store/addItemToCart response:", res.data);
 
-      const guestCartId = localStorage.getItem("guest_cart_id");
-
-      // For guest users, include cartId in body
-      if (!accessToken && guestCartId) {
-        body.cartId = guestCartId;
-      }
-
-      const headers = {};
-      if (accessToken) {
-        headers["Authorization"] = `Bearer ${accessToken}`;
-      }
-
-      const res = await axiosInstance.post("/store/addItemToCart", body, {
-        headers,
-      });
-
-      // If backend returns a new guest cartId, store it
-      if (!accessToken && !guestCartId && res.data.cartId) {
+      // 6. Update guest_cart_id if new or changed
+      if (!accessToken && res.data?.cartId && res.data.cartId !== guestCartId) {
         localStorage.setItem("guest_cart_id", res.data.cartId);
-        console.log("[Description] Saved new guest cartId:", res.data.cartId);
+        console.log("[Description] Updated guest cartId:", res.data.cartId);
       }
 
       alert("Added to cart!");
     } catch (err) {
-      console.error("Error adding to cart:", err);
+      console.error("[Description] Error adding to cart:", err);
       alert("Failed to add to cart.");
     }
   };
@@ -84,7 +99,6 @@ const Description = () => {
   return (
     <div className="description-container">
       <ShopHeader searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-
       <div className="main-content">
         <div className="product-images">
           <div className="main-image">
@@ -97,25 +111,13 @@ const Description = () => {
           <div className="thumbnail-images">
             {kit.images && kit.images.length > 0
               ? kit.images.map((imgUrl, idx) => (
-                  <div
-                    key={idx}
-                    className="thumbnail"
-                    onClick={() => setMainImage(imgUrl)}
-                  >
-                    <img
-                      src={imgUrl}
-                      alt={`${kit.name} thumbnail ${idx + 1}`}
-                      className="thumbnail-img"
-                    />
+                  <div key={idx} className="thumbnail" onClick={() => setMainImage(imgUrl)}>
+                    <img src={imgUrl} alt={`thumbnail ${idx + 1}`} className="thumbnail-img" />
                   </div>
                 ))
               : kit.image && (
                   <div className="thumbnail">
-                    <img
-                      src={kit.image}
-                      alt={`${kit.name} thumbnail`}
-                      className="thumbnail-img"
-                    />
+                    <img src={kit.image} alt="thumbnail" className="thumbnail-img" />
                   </div>
                 )}
           </div>
