@@ -96,7 +96,6 @@
 }
 
 .stat-card {
-  background-color: bla;
   padding: 20px 18px;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -464,4 +463,50 @@ form button.btn-edit {
   padding: 8px 14px;
   border-radius: 6px;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .admin-sidebar {
+    position: fixed;
+    width: 100%;
+    height: auto;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    flex-wrap: wrap;
+    background-color: #1f2937;
+  }
+
+  .admin-content {
+    margin-left: 0;
+    margin-top: 200px; 
+    padding: 15px;
+  }
+
+  .sidebar-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 10px;
+  }
+
+  .sidebar-link {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  .stat-grid{
+    margin-top: 100px;
+  }
+  .login-container{
+    margin-top: 50px;
+  }
+  .settings-sidebar-custom{
+    margin-top: 50px;
+  }
+  .content-page{
+    margin-top: 50px;
+  }
 }
