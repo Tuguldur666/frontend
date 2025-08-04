@@ -228,7 +228,7 @@ const TeachSettings = () => {
               margin="normal"
             />
             <Box display="flex" justifyContent="flex-end" mt={3}>
-              <Button variant="contained" onClick={handleSave}>
+              <Button variant="contained" onClick={handleSave} style={{backgroundColor:"#1f2937"}}>
                 Хадгалах
               </Button>
             </Box>

@@ -98,6 +98,7 @@ const AdminSidebar = ({ isOpen, sidebarRef, closeSidebar }) => {
               ⚙️ Тохиргоо
             </NavLink>
           </li>
+          <br/>
           <li>
             <button
               onClick={handleLogout}
@@ -109,7 +110,7 @@ const AdminSidebar = ({ isOpen, sidebarRef, closeSidebar }) => {
                 padding: 0,
               }}
             >
-              🚪 Logout
+              🔓 Гарах
             </button>
           </li>
         </ul>
