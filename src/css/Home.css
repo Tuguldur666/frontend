@@ -1,5 +1,7 @@
+* {
+  font-family: "Inter", "Noto Sans", sans-serif;
+}
 .home-container {
-  font-family: 'Noto Sans Mongolian';
   padding: 0 150px;
 }
 
@@ -28,13 +30,12 @@
 
 .head-logo {
   font-size: 20px;
-  font-family: 'Noto Sans Mongolian';
+
   color: black;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
-  margin-bottom: 10px;
 }
 
 .logo-img {
@@ -94,7 +95,7 @@
   outline: none;
 }
 .registerr-btn {
-  padding: 8px 18px;
+  padding: 4px 18px;
   border-radius: 5px;
   border: none;
   cursor: pointer;
@@ -271,7 +272,6 @@
 .footer {
   background-color: #f9f9f9;
   padding: 60px 150px 30px 150px;
-  font-family: 'Noto Sans Mongolian';
 }
 
 .footer-main {

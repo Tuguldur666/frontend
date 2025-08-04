@@ -3,6 +3,8 @@ import "../css/Home.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
+import '@fontsource/inter'; 
+
 function Home() {
   const location = useLocation();
   const navigate = useNavigate();
