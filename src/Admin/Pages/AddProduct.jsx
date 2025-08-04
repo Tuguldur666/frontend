@@ -1,380 +1,217 @@
-import React, { useEffect, useState, useContext } from "react";
-import axiosInstance from "../../axiosInstance";
-import "../css/Admin.css";
-import { UserContext } from "../../UserContext";
+import React, { useState, useEffect } from 'react';
+import axiosInstance, { setAuthToken } from '../../axiosInstance'; // make sure this path is valid
 
-const AdAllProducts = () => {
-  const { accessToken } = useContext(UserContext);
+const CLOUD_NAME = 'dvlxevlor';
+const UPLOAD_PRESET = 'E-Drum';
 
-  const [products, setProducts] = useState([]);
-  const [editProductId, setEditProductId] = useState(null);
-  const [editForm, setEditForm] = useState({
-    title: "",
-    description: "",
-    category: "",
-    price: "",
-    thumbnail: "",
-    images: [],
-  });
-  const [error, setError] = useState("");
+const AdAddProduct = ({ accessToken }) => {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+  const [price, setPrice] = useState('');
+  const [images, setImages] = useState([]);
+  const [previewUrls, setPreviewUrls] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
-    try {
-      const res = await axiosInstance.get("/store/getAllProducts");
-      setProducts(res.data.data || []);
-    } catch (err) {
-      console.error("Error fetching products:", err);
+    if (accessToken) {
+      console.log("Setting auth token:", accessToken);
+      setAuthToken(accessToken);
+    } else {
+      console.warn("No accessToken provided!");
     }
-  };
+  }, [accessToken]);
 
-  const startEditing = (product) => {
-    setEditProductId(product._id);
-    setEditForm({
-      title: product.title || "",
-      description: product.description || "",
-      category: product.category || "",
-      price: product.price || "",
-      thumbnail: product.thumbnail || "",
-      images: product.images || [],
-    });
-    setError("");
-  };
-
-  const cancelEditing = () => {
-    setEditProductId(null);
-    setError("");
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEditForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  // Handle file input change for thumbnail upload
-  const handleThumbnailUpload = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // Preview image as base64 (you might want to upload to server here instead)
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setEditForm((prev) => ({
-        ...prev,
-        thumbnail: reader.result, // base64 string
-      }));
+  useEffect(() => {
+    return () => {
+      previewUrls.forEach(url => URL.revokeObjectURL(url));
     };
-    reader.readAsDataURL(file);
+  }, [images]);
+
+  const onImagesChange = (e) => {
+    const files = Array.from(e.target.files);
+    console.log("Selected images:", files);
+    setImages(files);
+    setPreviewUrls(files.map(file => URL.createObjectURL(file)));
   };
 
-  // Set thumbnail by clicking one of existing images
-  const setThumbnailFromImage = (imgUrl) => {
-    setEditForm((prev) => ({
-      ...prev,
-      thumbnail: imgUrl,
-    }));
+  const uploadToCloudinary = async (file, index) => {
+    console.log(`Uploading image ${index + 1}:`, file.name);
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', UPLOAD_PRESET);
+
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      console.error("Cloudinary upload error:", err);
+      throw new Error('Зураг оруулахад алдаа гарлаа');
+    }
+
+    const data = await res.json();
+    console.log(`Uploaded image ${index + 1}:`, data.secure_url);
+    return data.secure_url;
   };
 
-  const removeImage = (index) => {
-    setEditForm((prev) => ({
-      ...prev,
-      images: prev.images.filter((_, i) => i !== index),
-    }));
-  };
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
 
-  const updateProduct = async () => {
-    setError("");
-    if (!accessToken) {
-      setError("Unauthorized: No token found");
+    console.log("Submitting product...");
+    console.log("Current token header:", axiosInstance.defaults.headers.common['Authorization']);
+
+    const priceNumber = Number(price);
+    if (!title.trim() || !description.trim() || !category.trim()) {
+      setError('Нэр, тайлбар, категори хоосон байж болохгүй');
+      return;
+    }
+    if (isNaN(priceNumber) || priceNumber <= 0) {
+      setError('Үнэ нь 0-ээс их тоо байх ёстой');
+      return;
+    }
+    if (images.length === 0) {
+      setError('Хамгийн багадаа нэг зураг оруулна уу');
       return;
     }
 
-    try {
-      await axiosInstance.put(
-        "/store/updateProduct",
-        {
-          productId: editProductId,
-          title: editForm.title,
-          description: editForm.description,
-          category: editForm.category,
-          price: Number(editForm.price),
-          thumbnail: editForm.thumbnail,
-          images: editForm.images,
-        },
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        }
-      );
-      fetchProducts();
-      cancelEditing();
-    } catch (err) {
-      console.error("Failed to update product:", err);
-      setError(
-        err.response?.data?.message || "Failed to update product. Check your input."
-      );
-    }
-  };
-
-  const deleteProduct = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) return;
-
-    if (!accessToken) {
-      alert("Unauthorized: No token found");
-      return;
-    }
+    setLoading(true);
 
     try {
-      await axiosInstance.delete("/store/deleteProduct", {
-        headers: { Authorization: `Bearer ${accessToken}` },
-        data: { productId: id },
-      });
-      fetchProducts();
-      if (editProductId === id) cancelEditing();
+      const uploadedUrls = await Promise.all(images.map((img, i) => uploadToCloudinary(img, i)));
+
+      const productData = {
+        title,
+        description,
+        category,
+        price: priceNumber,
+        thumbnail: uploadedUrls[0],
+        images: uploadedUrls,
+      };
+
+      console.log("Sending product to backend:", productData);
+
+      const res = await axiosInstance.post('/store/createProduct', productData);
+
+      console.log("Response from backend:", res);
+
+      alert('Бүтээгдэхүүн амжилттай нэмэгдлээ!');
+      setTitle('');
+      setDescription('');
+      setCategory('');
+      setPrice('');
+      setImages([]);
+      setPreviewUrls([]);
     } catch (err) {
-      console.error("Failed to delete product:", err);
-      alert(err.response?.data?.message || "Failed to delete product.");
+      console.error("Error creating product:", err);
+      if (err.response) {
+        console.error("Backend response data:", err.response.data);
+        setError(err.response.data.message || 'Бүтээгдэхүүн нэмэхэд алдаа гарлаа');
+      } else {
+        setError(err.message || 'Алдаа гарлаа');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="content-page">
-      <h2>Бүх бараа</h2>
-      <table className="content-table">
-        <thead>
-          <tr>
-            <th>Нэр</th>
-            <th>Тайлбар</th>
-            <th>Ангилал</th>
-            <th>Үнэ</th>
-            <th>Thumbnail</th>
-            <th>Зурагнууд</th>
-            <th>Үйлдэл</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((p) => (
-            <tr key={p._id}>
-              <td>
-                {editProductId === p._id ? (
-                  <input
-                    name="title"
-                    value={editForm.title}
-                    onChange={handleChange}
-                  />
-                ) : (
-                  p.title
-                )}
-              </td>
-              <td>
-                {editProductId === p._id ? (
-                  <input
-                    name="description"
-                    value={editForm.description}
-                    onChange={handleChange}
-                  />
-                ) : (
-                  p.description
-                )}
-              </td>
-              <td>
-                {editProductId === p._id ? (
-                  <input
-                    name="category"
-                    value={editForm.category}
-                    onChange={handleChange}
-                  />
-                ) : (
-                  p.category
-                )}
-              </td>
-              <td>
-                {editProductId === p._id ? (
-                  <input
-                    type="number"
-                    name="price"
-                    value={editForm.price}
-                    onChange={handleChange}
-                    min={0}
-                  />
-                ) : (
-                  p.price
-                )}
-              </td>
-              <td style={{ minWidth: 160 }}>
-                {editProductId === p._id ? (
-                  <>
-                    {editForm.thumbnail ? (
-                      <img
-                        src={editForm.thumbnail}
-                        alt="thumbnail"
-                        style={{
-                          width: 80,
-                          height: 60,
-                          objectFit: "cover",
-                          marginBottom: 8,
-                          border: "2px solid #333",
-                          borderRadius: 4,
-                        }}
-                      />
-                    ) : (
-                      <span>Thumbnail байхгүй</span>
-                    )}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleThumbnailUpload}
-                      style={{ marginBottom: 8 }}
-                    />
-                    <div style={{ fontSize: 12, marginBottom: 4 }}>
-                      Сонгох: доорх зургууд дунд дараарай
-                    </div>
-                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                      {editForm.images && editForm.images.length > 0 ? (
-                        editForm.images.map((img, i) => (
-                          <img
-                            key={i}
-                            src={img}
-                            alt={`select-thumb-${i}`}
-                            onClick={() => setThumbnailFromImage(img)}
-                            style={{
-                              width: 40,
-                              height: 30,
-                              objectFit: "cover",
-                              borderRadius: 4,
-                              cursor: "pointer",
-                              border:
-                                editForm.thumbnail === img
-                                  ? "2px solid blue"
-                                  : "1px solid #ccc",
-                            }}
-                            title="Click to set as thumbnail"
-                          />
-                        ))
-                      ) : (
-                        <span>Зураг байхгүй</span>
-                      )}
-                    </div>
-                  </>
-                ) : p.thumbnail ? (
-                  <img
-                    src={p.thumbnail}
-                    alt="thumbnail"
-                    style={{ width: 60, height: 40, objectFit: "cover" }}
-                  />
-                ) : (
-                  "-"
-                )}
-              </td>
-              <td style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                {editProductId === p._id ? (
-                  editForm.images.length > 0 ? (
-                    editForm.images.map((img, i) => (
-                      <div
-                        key={i}
-                        style={{ position: "relative", display: "inline-block" }}
-                      >
-                        <img
-                          src={img}
-                          alt={`img-${i}`}
-                          style={{
-                            width: 60,
-                            height: 40,
-                            objectFit: "cover",
-                            borderRadius: 4,
-                          }}
-                        />
-                        <button
-                          type="button"
-                          title="Зураг устгах"
-                          onClick={() => removeImage(i)}
-                          style={{
-                            position: "absolute",
-                            top: -6,
-                            right: -6,
-                            background: "red",
-                            border: "none",
-                            borderRadius: "50%",
-                            color: "white",
-                            width: 20,
-                            height: 20,
-                            cursor: "pointer",
-                          }}
-                        >
-                          &times;
-                        </button>
-                      </div>
-                    ))
-                  ) : (
-                    <span>Зураг байхгүй</span>
-                  )
-                ) : p.images && p.images.length > 0 ? (
-                  p.images.map((img, i) => (
-                    <img
-                      key={i}
-                      src={img}
-                      alt={`img-${i}`}
-                      style={{
-                        width: 40,
-                        height: 30,
-                        marginRight: 5,
-                        objectFit: "cover",
-                        borderRadius: 4,
-                      }}
-                    />
-                  ))
-                ) : (
-                  "-"
-                )}
-              </td>
-              <td>
-                {editProductId === p._id ? (
-                  <>
-                    <button
-                      onClick={updateProduct}
-                      className="btn-edit"
-                      style={{ marginRight: 8 }}
-                    >
-                      Хадгалах
-                    </button>
-                    <button onClick={cancelEditing} className="btn-delete">
-                      Болих
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => startEditing(p)}
-                      className="btn-edit"
-                      style={{ marginRight: 8 }}
-                    >
-                      Засах
-                    </button>
-                    <button
-                      onClick={() => deleteProduct(p._id)}
-                      className="btn-delete"
-                    >
-                      Устгах
-                    </button>
-                  </>
-                )}
-              </td>
-            </tr>
+    <div className="admin-content">
+      <h2>Бүтээгдэхүүн нэмэх</h2>
+      <form onSubmit={onSubmit} style={{ maxWidth: 600 }} noValidate>
+        <div style={{ marginBottom: 12 }}>
+          <label>Нэр:</label><br />
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+            style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #ccc' }}
+          />
+        </div>
+
+        <div style={{ marginBottom: 12 }}>
+          <label>Тайлбар:</label><br />
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={4}
+            required
+            style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #ccc' }}
+          />
+        </div>
+
+        <div style={{ marginBottom: 12 }}>
+          <label>Категори:</label><br />
+          <input
+            type="text"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+            style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #ccc' }}
+          />
+        </div>
+
+        <div style={{ marginBottom: 12 }}>
+          <label>Үнэ (₮):</label><br />
+          <input
+            type="number"
+            min="1"
+            step="100"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            required
+            style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #ccc' }}
+          />
+        </div>
+
+        <div style={{ marginBottom: 12 }}>
+          <label>Зураг сонгох (олон зураг сонгож болно):</label><br />
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={onImagesChange}
+            required
+          />
+        </div>
+
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 16 }}>
+          {previewUrls.map((url, i) => (
+            <img
+              key={i}
+              src={url}
+              alt={`preview-${i}`}
+              style={{ width: 100, height: 100, objectFit: 'cover', borderRadius: 8, boxShadow: '0 0 5px rgba(0,0,0,0.2)' }}
+            />
           ))}
-        </tbody>
-      </table>
-      {error && (
-        <p style={{ color: "red", marginTop: 10, fontWeight: "bold" }}>
-          {error}
-        </p>
-      )}
+        </div>
+
+        {error && <div style={{ color: 'red', marginBottom: 12 }}>{error}</div>}
+
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            backgroundColor: loading ? '#999' : '#2196F3',
+            color: 'white',
+            padding: '10px 18px',
+            borderRadius: 6,
+            border: 'none',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            fontWeight: 'bold',
+            fontSize: 16,
+          }}
+        >
+          {loading ? 'Нэмэж байна...' : 'Бүтээгдэхүүн нэмэх'}
+        </button>
+      </form>
     </div>
   );
 };
 
-export default AdAllProducts;
+export default AdAddProduct;
