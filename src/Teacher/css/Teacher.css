@@ -10,7 +10,6 @@
   padding-left: 20px;
   z-index: 1000;
   box-sizing: border-box;
-  font-family: 'Noto Sans Mongolian';
   transition: all 0.3s ease;
 }
 
@@ -118,17 +117,50 @@
   min-width: 250px;
 }
 
-.dashboard-activity {
-  border: 1px solid rgb(178, 178, 178);
-  border-radius: 10px;
+.teach-dashboard {
   padding: 20px;
-  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.teach-dashboard-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
+.teach-stat-grid {
+   display: flex;
+  flex-direction: row;
+  gap: 20px;
+  flex-wrap: wrap;
+  flex: 1; /* takes available width */
+}
+.teach-.stat-card {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  min-width: 150px;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
+  flex: 1 1 150px;
+  text-align: center;
+}
+.teach-dashboard-bottom {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  flex-wrap: wrap;
+}
 .dashboard-courses {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   border: 1px solid rgb(184, 184, 184);
   border-radius: 20px;
   padding: 20px;
+  background-color: white;
 }
 
 .settings-wrapper {
@@ -237,12 +269,12 @@
 }
 
 .course-card {
-  background-color: #e0e7ff;
-  padding: 16px 20px;
-  border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  width: 220px;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  background-color: #fefefe;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .course-card:hover {

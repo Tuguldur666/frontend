@@ -9,7 +9,8 @@ html,
 body {
   height: 100%;
   width: 100%;
-  font-family: 'Noto Sans Mongolian';
+  font-family: "Inter", "Noto Sans", sans-serif;
+  font-weight: 300;
   background-color: #33213c;
   color: #ffffff;
   overflow-x: hidden;
