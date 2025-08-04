@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { ArrowLeft, Package, Trash2, Minus, Plus } from "lucide-react";
 import axiosInstance from "../../axiosInstance";
 import { UserContext } from "../../UserContext";
-import ShopHeader from "./ShopHeader"; // Import header here
+import ShopHeader from "./ShopHeader";
 import "../Css/ShoppingCart.css";
 
 const ShoppingCart = () => {
@@ -25,8 +25,7 @@ const ShoppingCart = () => {
         console.log("[ShoppingCart][syncGuestCartToUser] Response:", res.data);
         localStorage.removeItem("guest_cart_id");
         localStorage.removeItem("guest_cart_items");
-        console.log("[ShoppingCart][syncGuestCartToUser] Removed guest_cart_id and guest_cart_items from localStorage");
-        await new Promise((resolve) => setTimeout(resolve, 400)); // small delay to ensure sync
+        await new Promise((resolve) => setTimeout(resolve, 400));
         console.log("[ShoppingCart][syncGuestCartToUser] Delay complete, returning from sync");
       } catch (err) {
         console.error("[ShoppingCart][syncGuestCartToUser] Error:", err);
@@ -40,10 +39,8 @@ const ShoppingCart = () => {
         if (accessToken) {
           console.log("[ShoppingCart][fetchCart] Logged-in user detected");
           const guestCartId = localStorage.getItem("guest_cart_id");
-          console.log("[ShoppingCart][fetchCart] guest_cart_id from localStorage:", guestCartId);
 
           if (guestCartId) {
-            console.log("[ShoppingCart][fetchCart] Syncing guest cart to user...");
             await syncGuestCartToUser(guestCartId);
           }
 
@@ -54,17 +51,12 @@ const ShoppingCart = () => {
           });
           console.log("[ShoppingCart][fetchCart] Backend /store/getCart response:", res.data);
 
-          const items = Array.isArray(res.data?.data)
-            ? res.data.data
-            : res.data?.data?.cart || [];
-          console.log("[ShoppingCart][fetchCart] Extracted items array:", items);
-
+          const items = res.data?.data?.items || [];
           setCartItems(items);
           console.log("[ShoppingCart][fetchCart] cartItems state updated");
         } else {
           console.log("[ShoppingCart][fetchCart] Guest user detected");
           const cartId = localStorage.getItem("guest_cart_id");
-          console.log("[ShoppingCart][fetchCart] guest_cart_id from localStorage:", cartId);
 
           if (cartId) {
             const res = await axiosInstance.get("/store/getCart", {
@@ -72,16 +64,12 @@ const ShoppingCart = () => {
             });
             console.log("[ShoppingCart][fetchCart] Guest /store/getCart response:", res.data);
 
-            const items = Array.isArray(res.data?.data)
-              ? res.data.data
-              : res.data?.data?.cart || [];
-            console.log("[ShoppingCart][fetchCart] Extracted guest items array:", items);
-
+            const items = res.data?.data?.items || [];
             setCartItems(items);
             console.log("[ShoppingCart][fetchCart] cartItems state updated for guest");
           } else {
-            console.log("[ShoppingCart][fetchCart] No guest_cart_id found, setting cartItems to empty");
             setCartItems([]);
+            console.log("[ShoppingCart][fetchCart] No guest_cart_id found");
           }
         }
       } catch (err) {
@@ -95,7 +83,6 @@ const ShoppingCart = () => {
   }, [accessToken]);
 
   const toggleItemSelection = (id) => {
-    console.log("[ShoppingCart][toggleItemSelection] toggling selection for id:", id);
     setCartItems((items) =>
       items.map((item) =>
         item._id === id ? { ...item, selected: !item.selected } : item
@@ -104,76 +91,50 @@ const ShoppingCart = () => {
   };
 
   const removeItem = async (id, productId) => {
-    console.log("[ShoppingCart][removeItem] removing item with id:", id);
-
     try {
       if (accessToken) {
-        // Logged-in user
         await axiosInstance.delete("/store/removeItemFromCart", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-          data: {
-            productId: productId,
-          },
+          data: { productId },
         });
       } else {
-        // Guest user
         const cartId = localStorage.getItem("guest_cart_id");
-        if (!cartId) {
-          console.warn("[ShoppingCart][removeItem] No guest cart ID found");
-          return;
-        }
+        if (!cartId) return;
         await axiosInstance.delete("/store/removeItemFromCart", {
-          data: {
-            productId: productId,
-            cartId: cartId,
-          },
+          data: { cartId, productId },
         });
       }
-      // On success, update UI
       setCartItems((items) => items.filter((item) => item._id !== id));
-      console.log("[ShoppingCart][removeItem] Item removed successfully");
     } catch (err) {
       console.error("[ShoppingCart][removeItem] Failed to remove item:", err);
     }
   };
 
   const clearCart = async () => {
-    console.log("[ShoppingCart][clearCart] Clearing entire cart");
     try {
       if (accessToken) {
         await axiosInstance.delete("/store/clearCart", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-          data: {}, // no body needed for logged-in user
         });
       } else {
         const cartId = localStorage.getItem("guest_cart_id");
-        if (!cartId) {
-          console.warn("[ShoppingCart][clearCart] No guest cart ID found");
-          return;
-        }
+        if (!cartId) return;
         await axiosInstance.delete("/store/clearCart", {
-          data: {
-            cartId: cartId,
-          },
+          data: { cartId },
         });
       }
       setCartItems([]);
-      console.log("[ShoppingCart][clearCart] Cart cleared successfully");
     } catch (err) {
       console.error("[ShoppingCart][clearCart] Failed to clear cart:", err);
     }
   };
 
   const updateQuantity = (id, newQuantity) => {
-    console.log("[ShoppingCart][updateQuantity] updating quantity for id:", id, "to:", newQuantity);
-    if (newQuantity < 1) {
-      console.log("[ShoppingCart][updateQuantity] newQuantity less than 1, ignoring");
-      return;
-    }
+    if (newQuantity < 1) return;
     setCartItems((items) =>
       items.map((item) =>
         item._id === id ? { ...item, quantity: newQuantity } : item
@@ -182,22 +143,16 @@ const ShoppingCart = () => {
   };
 
   const handlePlaceOrder = () => {
-    console.log("[ShoppingCart][handlePlaceOrder] triggered");
     if (!accessToken) {
       alert("Захиалахын тулд эхлээд нэвтэрнэ үү");
-      console.log("[ShoppingCart][handlePlaceOrder] user not logged in, showing alert");
       return;
     }
-
     alert("Таны захиалга амжилттай боллоо!");
-    console.log("[ShoppingCart][handlePlaceOrder] order placed alert shown");
   };
-
-  console.log("[ShoppingCart] Rendering, cartItems:", cartItems);
 
   return (
     <>
-      <ShopHeader /> {/* Header here */}
+      <ShopHeader />
 
       <div className="shopping-cart-container">
         <div className="shopping-cart-header">
@@ -216,7 +171,7 @@ const ShoppingCart = () => {
                   <div key={item._id} className="cart-item">
                     <input
                       type="checkbox"
-                      checked={item.selected}
+                      checked={item.selected || false}
                       onChange={() => toggleItemSelection(item._id)}
                       className="cart-item-checkbox"
                     />
@@ -225,7 +180,9 @@ const ShoppingCart = () => {
                       <Package size={24} color="#000" />
                     </div>
 
-                    <div className="item-name">{item.productId?.title || "Unnamed product"}</div>
+                    <div className="item-name">
+                      {item.productId?.title || "Unnamed product"}
+                    </div>
 
                     <div className="quantity-controls">
                       <button
@@ -243,7 +200,9 @@ const ShoppingCart = () => {
                       </button>
                     </div>
 
-                    <div className="item-price">{item.productId?.price || "N/A"}₮</div>
+                    <div className="item-price">
+                      {item.productId?.price || "N/A"}₮
+                    </div>
 
                     <button
                       onClick={() => removeItem(item._id, item.productId?._id)}
@@ -258,14 +217,12 @@ const ShoppingCart = () => {
               )}
             </div>
 
-            {/* Place order button */}
             <div className="order-button-container">
               <button className="btn-place-order" onClick={handlePlaceOrder}>
                 Захиалах
               </button>
             </div>
 
-            {/* Clear cart button */}
             {cartItems.length > 0 && (
               <div className="clear-cart-button-container" style={{ marginTop: "1rem" }}>
                 <button className="btn-clear-cart" onClick={clearCart}>
