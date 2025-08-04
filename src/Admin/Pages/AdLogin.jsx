@@ -79,7 +79,7 @@ function AdLogin() {
       </button>
 
       <div className="login-box">
-        <h2>Админ нэвтрэх</h2>
+        <h2>Админ</h2>
         <p className="subtitle">Админ эрхээр нэвтэрнэ үү</p>
 
         <input
