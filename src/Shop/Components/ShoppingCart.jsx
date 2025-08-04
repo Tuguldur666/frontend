@@ -10,48 +10,99 @@ const ShoppingCart = () => {
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
+    const syncGuestCartToUser = async (cartId) => {
+      try {
+        console.log("[ShoppingCart][syncGuestCartToUser] Start syncing with cartId:", cartId);
+        const res = await axiosInstance.post(
+          "/store/assignGuestCartToUser",
+          { cartId },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        console.log("[ShoppingCart][syncGuestCartToUser] Response:", res.data);
+        localStorage.removeItem("guest_cart_id");
+        console.log("[ShoppingCart][syncGuestCartToUser] Removed guest_cart_id from localStorage");
+        await new Promise((resolve) => setTimeout(resolve, 400));
+        console.log("[ShoppingCart][syncGuestCartToUser] Delay complete, returning from sync");
+      } catch (err) {
+        console.error("[ShoppingCart][syncGuestCartToUser] Error:", err);
+      }
+    };
+
     const fetchCart = async () => {
       try {
+        console.log("[ShoppingCart][fetchCart] accessToken:", accessToken);
         if (accessToken) {
-          // Logged-in user: fetch cart with token
-          console.log("[ShoppingCart] Logged-in user detected, fetching cart...");
+          console.log("[ShoppingCart][fetchCart] Logged-in user detected");
+          const guestCartId = localStorage.getItem("guest_cart_id");
+          console.log("[ShoppingCart][fetchCart] guest_cart_id from localStorage:", guestCartId);
+
+          if (guestCartId) {
+            console.log("[ShoppingCart][fetchCart] Syncing guest cart to user...");
+            await syncGuestCartToUser(guestCartId);
+          }
+
           const res = await axiosInstance.get("/store/getCart", {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
           });
-          setCartItems(res.data.cartItems || []);
+          console.log("[ShoppingCart][fetchCart] /store/getCart response:", res);
+          console.log("[ShoppingCart][fetchCart] Response data:", res.data);
+          console.log("[ShoppingCart][fetchCart] Response data.data:", res.data.data);
+
+          // Log all keys in data object
+          if (res.data && res.data.data) {
+            console.log("[ShoppingCart][fetchCart] Keys in data:", Object.keys(res.data.data));
+          }
+
+          const items = res.data?.data?.items || [];
+          console.log("[ShoppingCart][fetchCart] Extracted items array:", items);
+
+          setCartItems(items);
+          console.log("[ShoppingCart][fetchCart] cartItems state updated");
         } else {
-          // Guest user: fetch cart with cartId from localStorage
-          console.log("[ShoppingCart] Guest user detected, checking localStorage for guest_cart_id.");
-          let cartId = localStorage.getItem("guest_cart_id");
-          console.log("[ShoppingCart] Guest cartId from localStorage:", cartId);
+          console.log("[ShoppingCart][fetchCart] Guest user detected");
+          const cartId = localStorage.getItem("guest_cart_id");
+          console.log("[ShoppingCart][fetchCart] guest_cart_id from localStorage:", cartId);
 
           if (cartId) {
             const res = await axiosInstance.get("/store/getCart", {
               params: { cartId },
             });
+            console.log("[ShoppingCart][fetchCart] /store/getCart response for guest:", res);
+            console.log("[ShoppingCart][fetchCart] Response data for guest:", res.data);
+            console.log("[ShoppingCart][fetchCart] Response data.data for guest:", res.data.data);
 
-            if (res.data && res.data.data && Array.isArray(res.data.data.cart)) {
-              setCartItems(res.data.data.cart);
-            } else {
-              console.warn("[ShoppingCart] No cartItems found in guest cart response:", res.data);
-              setCartItems([]);
+            if (res.data && res.data.data) {
+              console.log("[ShoppingCart][fetchCart] Keys in guest data:", Object.keys(res.data.data));
             }
+
+            const items = res.data?.data?.items || [];
+            console.log("[ShoppingCart][fetchCart] Extracted guest items array:", items);
+
+            setCartItems(items);
+            console.log("[ShoppingCart][fetchCart] cartItems state updated for guest");
           } else {
-            console.log("[ShoppingCart] No guest_cart_id found, initializing empty cart.");
+            console.log("[ShoppingCart][fetchCart] No guest_cart_id found, setting cartItems to empty");
             setCartItems([]);
           }
         }
       } catch (err) {
-        console.error("Error loading cart:", err);
+        console.error("[ShoppingCart][fetchCart] Error loading cart:", err);
+        setCartItems([]);
       }
     };
 
+    console.log("[ShoppingCart] useEffect triggered, calling fetchCart");
     fetchCart();
   }, [accessToken]);
 
   const toggleItemSelection = (id) => {
+    console.log("[ShoppingCart][toggleItemSelection] toggling selection for id:", id);
     setCartItems((items) =>
       items.map((item) =>
         item.id === id ? { ...item, selected: !item.selected } : item
@@ -60,11 +111,16 @@ const ShoppingCart = () => {
   };
 
   const removeItem = (id) => {
+    console.log("[ShoppingCart][removeItem] removing item with id:", id);
     setCartItems((items) => items.filter((item) => item.id !== id));
   };
 
   const updateQuantity = (id, newQuantity) => {
-    if (newQuantity < 1) return;
+    console.log("[ShoppingCart][updateQuantity] updating quantity for id:", id, "to:", newQuantity);
+    if (newQuantity < 1) {
+      console.log("[ShoppingCart][updateQuantity] newQuantity less than 1, ignoring");
+      return;
+    }
     setCartItems((items) =>
       items.map((item) =>
         item.id === id ? { ...item, quantity: newQuantity } : item
@@ -73,16 +129,18 @@ const ShoppingCart = () => {
   };
 
   const handlePlaceOrder = () => {
+    console.log("[ShoppingCart][handlePlaceOrder] triggered");
     if (!accessToken) {
       alert("Захиалахын тулд эхлээд нэвтэрнэ үү");
-      // TODO: redirect to login page if you have routing, e.g.
-      // navigate("/login");
+      console.log("[ShoppingCart][handlePlaceOrder] user not logged in, showing alert");
       return;
     }
-    
-    // TODO: Add your place order logic here
+
     alert("Таны захиалга амжилттай боллоо!");
+    console.log("[ShoppingCart][handlePlaceOrder] order placed alert shown");
   };
+
+  console.log("[ShoppingCart] Rendering, cartItems:", cartItems);
 
   return (
     <>
@@ -100,44 +158,48 @@ const ShoppingCart = () => {
             <p className="cart-subtitle">You have {cartItems.length} items in your cart</p>
 
             <div className="cart-items">
-              {cartItems.map((item) => (
-                <div key={item.id} className="cart-item">
-                  <input
-                    type="checkbox"
-                    checked={item.selected}
-                    onChange={() => toggleItemSelection(item.id)}
-                    className="cart-item-checkbox"
-                  />
+              {cartItems.length > 0 ? (
+                cartItems.map((item) => (
+                  <div key={item.id} className="cart-item">
+                    <input
+                      type="checkbox"
+                      checked={item.selected}
+                      onChange={() => toggleItemSelection(item.id)}
+                      className="cart-item-checkbox"
+                    />
 
-                  <div className="item-image">
-                    <Package size={24} color="#000" />
-                  </div>
+                    <div className="item-image">
+                      <Package size={24} color="#000" />
+                    </div>
 
-                  <div className="item-name">{item.name}</div>
+                    <div className="item-name">{item.name || item.productId?.name}</div>
 
-                  <div className="quantity-controls">
-                    <button
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      className="quantity-button"
-                    >
-                      <Minus size={16} />
+                    <div className="quantity-controls">
+                      <button
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        className="quantity-button"
+                      >
+                        <Minus size={16} />
+                      </button>
+                      <span className="quantity-display">{item.quantity}</span>
+                      <button
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        className="quantity-button"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
+
+                    <div className="item-price">{item.price || item.productId?.price}</div>
+
+                    <button onClick={() => removeItem(item.id)} className="delete-button">
+                      <Trash2 size={20} color="#007bff" />
                     </button>
-                    <span className="quantity-display">{item.quantity}</span>
-                    <button
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="quantity-button"
-                    >
-                      <Plus size={16} />
-                    </button>
                   </div>
-
-                  <div className="item-price">{item.price}</div>
-
-                  <button onClick={() => removeItem(item.id)} className="delete-button">
-                    <Trash2 size={20} color="#007bff" />
-                  </button>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p>Your cart is empty.</p>
+              )}
             </div>
 
             {/* Place order button */}

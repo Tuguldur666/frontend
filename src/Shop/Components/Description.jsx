@@ -25,12 +25,8 @@ const Description = () => {
       .then((res) => {
         if (res.data.success && res.data.data) {
           setKit(res.data.data);
-
-          if (res.data.data.image) {
-            setMainImage(res.data.data.image);
-          } else if (res.data.data.images && res.data.data.images.length > 0) {
-            setMainImage(res.data.data.images[0]);
-          }
+          const img = res.data.data.image || res.data.data.images?.[0];
+          setMainImage(img || null);
         } else {
           console.error("Product not found or response malformed");
         }
@@ -56,25 +52,24 @@ const Description = () => {
 
       const guestCartId = localStorage.getItem("guest_cart_id");
 
+      // For guest users, include cartId in body
       if (!accessToken && guestCartId) {
-        body.cartId = guestCartId; // use existing guest cartId
+        body.cartId = guestCartId;
+      }
+
+      const headers = {};
+      if (accessToken) {
+        headers["Authorization"] = `Bearer ${accessToken}`;
       }
 
       const res = await axiosInstance.post("/store/addItemToCart", body, {
-        headers: accessToken
-          ? {
-              Authorization: `Bearer ${accessToken}`,
-            }
-          : {},
+        headers,
       });
 
-      // Save new guest cartId if it was just created by backend
-      if (!accessToken && !guestCartId) {
-        const newCartId = res.data.cartId;
-        if (newCartId) {
-          localStorage.setItem("guest_cart_id", newCartId);
-          console.log("[Description] Saved new guest cartId:", newCartId);
-        }
+      // If backend returns a new guest cartId, store it
+      if (!accessToken && !guestCartId && res.data.cartId) {
+        localStorage.setItem("guest_cart_id", res.data.cartId);
+        console.log("[Description] Saved new guest cartId:", res.data.cartId);
       }
 
       alert("Added to cart!");
