@@ -4,36 +4,28 @@
   min-height: 100vh;
   padding: 20px;
   font-family: Arial, sans-serif;
-}
-
-.shopping-cart-header {
   display: flex;
-  align-items: center;
-  margin-bottom: 30px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid #000;
-}
-
-.back-icon {
-  width: 24px;
-  height: 24px;
-  color: #000;
-  margin-right: 15px;
-  cursor: pointer;
-}
-
-.header-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #000;
-  margin: 0;
+  flex-direction: column; /* Stack header and content vertically */
 }
 
 .main-content {
   display: flex;
   gap: 40px;
+  margin-top: 20px; /* Space below the ShopHeader */
 }
 
+/* Remove .shopping-cart-header styles since header is replaced by ShopHeader component */
+/* .shopping-cart-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #000;
+} */
+
+/* Back icon and header title removed, since ShopHeader replaces it */
+
+/* Cart section styles remain */
 .cart-section {
   flex: 1;
 }
@@ -266,18 +258,55 @@
     flex-direction: column;
     gap: 20px;
   }
-  
+
   .payment-section {
     width: 100%;
   }
-  
+
   .cart-item {
     flex-wrap: wrap;
     gap: 10px;
   }
-  
+
   .item-name {
     min-width: 100%;
     order: -1;
   }
+}
+
+.order-button-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.btn-place-order {
+  padding: 10px 20px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-place-order:hover {
+  background-color: #0056b3;
+}
+.order-button-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.btn-place-order {
+  padding: 10px 20px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-place-order:hover {
+  background-color: #0056b3;
 }

@@ -12,7 +12,7 @@ const Description = () => {
   const [kit, setKit] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [mainImage, setMainImage] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(""); // to pass to header
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     if (!kitId) {
@@ -40,7 +40,7 @@ const Description = () => {
       });
   }, [kitId]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!kit) return;
 
     if (quantity < 1) {
@@ -48,36 +48,48 @@ const Description = () => {
       return;
     }
 
-    axiosInstance
-      .post(
-        "/store/addItemToCart",
-        {
-          productId: kit._id,
-          quantity,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      )
-      .then(() => {
-        alert("Added to cart!");
-      })
-      .catch((err) => {
-        console.error("Error adding to cart:", err);
-        alert("Failed to add to cart.");
+    try {
+      const body = {
+        productId: kit._id,
+        quantity,
+      };
+
+      const guestCartId = localStorage.getItem("guest_cart_id");
+
+      if (!accessToken && guestCartId) {
+        body.cartId = guestCartId; // use existing guest cartId
+      }
+
+      const res = await axiosInstance.post("/store/addItemToCart", body, {
+        headers: accessToken
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+            }
+          : {},
       });
+
+      // Save new guest cartId if it was just created by backend
+      if (!accessToken && !guestCartId) {
+        const newCartId = res.data.cartId;
+        if (newCartId) {
+          localStorage.setItem("guest_cart_id", newCartId);
+          console.log("[Description] Saved new guest cartId:", newCartId);
+        }
+      }
+
+      alert("Added to cart!");
+    } catch (err) {
+      console.error("Error adding to cart:", err);
+      alert("Failed to add to cart.");
+    }
   };
 
   if (!kit) return <div className="description-loading">Loading...</div>;
 
   return (
     <div className="description-container">
-      {/* Use ShopHeader here */}
       <ShopHeader searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-      {/* Rest of your Description content */}
       <div className="main-content">
         <div className="product-images">
           <div className="main-image">
