@@ -1,0 +1,178 @@
+  container: {
+    backgroundColor: '#fff',
+    minHeight: '100vh',
+    padding: '20px',
+    fontFamily: 'Arial, sans-serif'
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: '30px',
+    paddingBottom: '15px',
+    borderBottom: '2px solid #000'
+  },
+  backIcon: {
+    width: '24px',
+    height: '24px',
+    color: '#000',
+    marginRight: '15px',
+    cursor: 'pointer'
+  },
+  headerTitle: {
+    fontSize: '24px',
+    fontWeight: 'bold',
+    color: '#000',
+    margin: 0
+  },
+  mainContent: {
+    display: 'flex',
+    gap: '40px'
+  },
+  cartSection: {
+    flex: 1
+  },
+  cartTitle: {
+    fontSize: '20px',
+    fontWeight: 'bold',
+    color: '#000',
+    margin: '0 0 10px 0'
+  },
+  cartSubtitle: {
+    color: '#000',
+    marginBottom: '25px',
+    fontSize: '14px'
+  },
+  cartItems: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px'
+  },
+  cartItem: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: '15px',
+    border: '2px solid #000',
+    borderRadius: '8px',
+    backgroundColor: '#fff'
+  },
+  checkbox: {
+    width: '18px',
+    height: '18px',
+    marginRight: '15px',
+    accentColor: '#000'
+  },
+  itemImage: {
+    width: '60px',
+    height: '60px',
+    border: '2px solid #000',
+    borderRadius: '6px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: '15px',
+    backgroundColor: '#fff'
+  },
+  itemName: {
+    flex: 1,
+    fontSize: '16px',
+    fontWeight: '500',
+    color: '#000'
+  },
+  quantityControls: {
+    display: 'flex',
+    alignItems: 'center',
+    marginRight: '20px'
+  },
+  quantityButton: {
+    width: '32px',
+    height: '32px',
+    border: '1px solid #000',
+    backgroundColor: '#fff',
+    color: '#000',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    fontSize: '16px',
+    fontWeight: 'bold'
+  },
+  quantityDisplay: {
+    width: '50px',
+    height: '32px',
+    border: '1px solid #000',
+    borderLeft: 'none',
+    borderRight: 'none',
+    backgroundColor: '#fff',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '16px',
+    fontWeight: '500',
+    color: '#000'
+  },
+  itemPrice: {
+    fontSize: '16px',
+    fontWeight: '500',
+    color: '#000',
+    marginRight: '15px',
+    minWidth: '80px'
+  },
+  deleteButton: {
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: '5px'
+  },
+  paymentSection: {
+    width: '320px'
+  },
+  paymentContainer: {
+    backgroundColor: '#000',
+    color: '#fff',
+    padding: '25px',
+    borderRadius: '8px'
+  },
+  paymentTitle: {
+    fontSize: '18px',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: '25px',
+    margin: '0 0 25px 0'
+  },
+  paymentMethods: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '15px'
+  },
+  paymentMethod: {
+    backgroundColor: '#e5e5e5',
+    padding: '20px',
+    borderRadius: '8px',
+    textAlign: 'center',
+    cursor: 'pointer',
+    transition: 'background-color 0.2s'
+  },
+  paymentIcon: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '12px',
+    height: '20px'
+  },
+  transferIcon: {
+    width: '30px',
+    height: '3px',
+    backgroundColor: '#000',
+    position: 'relative'
+  },
+  qpayIcon: {
+    width: '30px',
+    height: '3px',
+    backgroundColor: '#000'
+  },
+  paymentMethodText: {
+    color: '#000',
+    fontSize: '12px',
+    fontWeight: 'bold',
+    lineHeight: '1.2'
+  }
+};

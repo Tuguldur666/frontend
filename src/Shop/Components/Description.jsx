@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../../axiosInstance";
 import "../css/Description.css";
-import { UserContext } from "../UserContext";
-import ShopHeader from "./ShopHeader"; // import the header
+import { UserContext } from "../../UserContext";
+import ShopHeader from "./ShopHeader";
 
 const Description = () => {
   const { kitId } = useParams();

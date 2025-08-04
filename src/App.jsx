@@ -6,9 +6,11 @@ import Register from "./components/register";
 import OTPVerification from "./components/OTPVerification";
 import Home from "./components/Home";
 import Subject from "./components/Subject";
-import Shop from "./components/Shop";
-import Description from "./components/Description";
-import ShoppingCart from "./components/ShoppingCart";
+
+import Shop from "./Shop/Components/Shop";
+import Description from "./Shop/Components/Description";
+import ShoppingCart from "./Shop/Components/ShoppingCart";
+
 import StudentPortal from "./components/StudentPortal";
 import LessonFree from "./components/LessonFree";
 import Assignments from "./components/Assignments";
