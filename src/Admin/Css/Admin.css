@@ -39,6 +39,7 @@
 }
 .sidebar-header h2 {
   font-size: 22px;
+  /* font-weight: 200; */
   margin-bottom: 25px;
   color: white;
 }
@@ -67,7 +68,7 @@
 .active-link {
   background-color: #272654;
   color: white;
-  font-weight: 600;
+  /* font-weight: 600; */
 }
 
 .logoutt-link {
@@ -176,7 +177,7 @@
 .active-tab {
   background: #828282;
   color: white;
-  font-weight: 600;
+  /* font-weight: 600; */
 }
 
 .orders-section h3 {

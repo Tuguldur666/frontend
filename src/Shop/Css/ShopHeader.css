@@ -75,7 +75,7 @@
 }
 
 .search-input:focus {
-  ring: 2px solid #3b82f6;
+  /* ring: 2px solid #3b82f6; */
   border-color: transparent;
 }
 
@@ -122,7 +122,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #black;
+  background-color: black;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
